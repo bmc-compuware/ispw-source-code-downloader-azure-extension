@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jalaj",
+  "author": "Jalaj Arora",
   "license": "ISC",
   "dependencies": {
     "azure-pipelines-task-lib": "^4.0.0-preview"

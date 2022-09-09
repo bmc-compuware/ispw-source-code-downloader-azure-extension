@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "ispw-source-code-downloader",
-    "name": "ISPW Source Code Downloader",
+    "name": "BMC ISPW Source Code Downloader",
     "public": false,
     "version": "5.41.0",
     "publisher": "JalajPrivatePublisher",

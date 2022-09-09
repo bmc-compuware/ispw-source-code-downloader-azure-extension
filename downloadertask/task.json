@@ -2,11 +2,11 @@
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1886",
     "name": "downloadertask",
-    "friendlyName": "ISPW Source Downloader",
+    "friendlyName": "BMC ISPW Source Code Downloader Task",
     "description": "Task 5.41 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
-    "author": "Jalaj BMC",
+    "author": "Jalaj Arora BMC",
     "version": {
         "Major": 5,
         "Minor": 41,
