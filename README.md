@@ -22,6 +22,8 @@ The following are required to use this plugin:
 
 In order to download ISPW members you will need to point to an installed Topaz Workbench Command Line Interface (CLI). The Topaz Workbench CLI will work with host connection(s) you also need to configure to download ISPW members.
 
+![](images/ispw.common.config.png)
+
 ### Downloading ISPW Container members
 
 This integration allows downloading of ISPW Container members from the mainframe to the PC.
@@ -63,7 +65,7 @@ Run the job, which by default the following occurs:
 
 ![](images/info.svg) Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
 
-<img src="images/download.ispw.container.members.png" height="350"/>
+![](images/ownload.ispw.container.members.png)
 
 ### Downloading ISPW Repository members
 
@@ -107,7 +109,7 @@ Run the job, which by default the following occurs:
 
 ![](images/info.svg) Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
 
-<img src="images/download.ispw.repository.members.png" height="400"/>
+![](images/download.ispw.repository.members.png)
 
 ## Product Assistance
 
