@@ -3,28 +3,51 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC ISPW Source Code Downloader",
     "public": false,
-    "version": "5.41.0",
+    "version": "5.62.0",
     "publisher": "JalajPrivatePublisher",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Extension updated 5.41 for downloading source from ISPW Repository and Containers",
+    "description": "Extension updated 5.62 for downloading source from ISPW Repository and Containers",
     "categories": [
         "Azure Pipelines"
     ],
     "icons": {
         "default": "images/ISPW_marble.png"        
     },
-    "content": {
-        "details": {
-            "path": "overview.md"
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/jarora8/ispw-source-code-downloader"
+    },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/jarora8/ispw-source-code-downloader/blob/main/readme.md"
+        },
+        "support": {
+            "uri": "https://support.bmc.com"
         }
     },
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
+    "tags": [
+        "BMC",
+        "ISPW",
+        "Source Code Downloader",
+        "Mainframe",
+        "Continuos Integration"
+    ],
     "files": [
         {
             "path": "downloadertask"
+        },
+        {
+            "path": "images",
+            "addressable": true
         }
     ],
     "contributions": [

@@ -1,4 +1,5 @@
 import tl = require('azure-pipelines-task-lib/task');
+import { Console } from 'console';
 import { IspwDownloader } from './IspwDownloader';
 
 async function run() {

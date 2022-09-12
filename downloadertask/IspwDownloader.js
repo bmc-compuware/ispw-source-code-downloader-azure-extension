@@ -163,16 +163,24 @@ var IspwDownloader = /** @class */ (function () {
         var componentTypes = tl.getInput('componentTypes', false);
         if (componentTypes != undefined) {
             cliArguments.set("componentTypes", componentTypes);
+            if (componentTypes.length != 0) {
+                cliArguments.set("ispwFilterFiles", true);
+            }
         }
         else {
             cliArguments.set("componentTypes", "");
+            cliArguments.set("ispwFilterFiles", false);
         }
         var applicationRootFolderNames = tl.getInput('applicationRootFolderNames', false);
         if (applicationRootFolderNames != undefined) {
             cliArguments.set("applicationRootFolderNames", applicationRootFolderNames);
+            if (applicationRootFolderNames.length != 0) {
+                cliArguments.set("ispwFilterFolders", true);
+            }
         }
         else {
             cliArguments.set("applicationRootFolderNames", "");
+            cliArguments.set("ispwFilterFolders", false);
         }
         var downloadCompileOnly = tl.getInput('downloadCompileOnly', false);
         if (downloadCompileOnly != undefined) {
@@ -192,7 +200,8 @@ var IspwDownloader = /** @class */ (function () {
             '-ispwServerLevel', cliArguments.get("repositoryLevel"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
             '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwLevelOption', cliArguments.get("levelOption"),
             '-ispwComponentType', cliArguments.get("componentTypes"), '-ispwFolderName', cliArguments.get("applicationRootFolderNames"),
-            '-ispwDownloadWithCompileOnly', cliArguments.get("downloadCompileOnly")
+            '-ispwDownloadWithCompileOnly', cliArguments.get("downloadCompileOnly"), '-ispwFilterFiles',
+            cliArguments.get("ispwFilterFiles"), '-ispwFilterFolders', cliArguments.get("ispwFilterFolders")
         ]);
         console.log(ls);
         ls.stdout.on('data', function (data) {
@@ -203,6 +212,9 @@ var IspwDownloader = /** @class */ (function () {
         });
         ls.on('exit', function (code) {
             console.log('child process exited with code ' + code);
+            if (code != null && code != 0) {
+                tl.setResult(tl.TaskResult.Failed, " An error may have occurred. Please see task logs or see the log file: " + cliArguments.get("windowsTopazWorkbenchCliHome") + "\\TopazBatchWkspc\\.metadata\\.log.");
+            }
         });
     };
     return IspwDownloader;
