@@ -13,6 +13,8 @@ The following are required to use this plugin:
 - Topaz Workbench CLI.
 - Host Communications Interface.
 
+Note: This extension version is only supported with local Azure Devops Server, it will not work with Azure Cloud. In future versions of this extension, we will support Azure cloud.
+
 ## Installing extensions in a Azure Devops Server Instance
 
 1. Install the BMC common configuration extension and BMC ISPW Source Code Downloader extension according to the Azure Devops instructions for installing extensions. 
@@ -34,7 +36,7 @@ This BMC ISPW Source Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
-![](images/info.svg) Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
+- Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
@@ -63,9 +65,9 @@ Run the job, which by default the following occurs:
 - Mainframe source is downloaded to the project's or job's workspace into an <ISPW Application name>/MF_Source folder.
 - Folder components are downloaded into an <ISPW Application name> folder.
 
-![](images/info.svg) Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
+- Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
 
-![](images/ownload.ispw.container.members.png)
+![](images/Download.ispw.container.members.png)
 
 ### Downloading ISPW Repository members
 
@@ -77,7 +79,7 @@ This BMC ISPW Source Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
-![](images/info.svg) Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
+Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
@@ -98,7 +100,7 @@ Do the following in the **Filter** section to identify ISPW members to be downlo
       - To download all components of a specified type regardless of whether they are within folders, use only the **Component types** field by entering the component type (such as COB, COPY, or JOB) on which to filter.
       - To download a folder that matches the name specified (and all of its contents), as well as all components that are not within a folder, use only the **Application root folder names** field by entering the name of the folder on which to filter.
       - To download all components and folders in the application and level selected, leave both fields empty.
-      ![](images/info.svg) To download multiple folders or types, comma-separate the values.
+      - To download multiple folders or types, comma-separate the values.
       - **Force download of unchanged source** : Optionally use to indicate that all source matching the current filter should be downloaded, regardless of whether it has been changed recently or not. If this box is left unchecked, it will delete any files in the workspace that no longer match the filter specified above. Leaving it unchecked will also only download source that has been changed since the last time the job was run.
 
 Click **Save**.
@@ -107,7 +109,7 @@ Run the job, which by default the following occurs:
 - Mainframe source is downloaded to the project's or job's workspace into an <ISPW Application name>/MF_Source folder.
 - Folder components are downloaded into an <ISPW Application name> folder.
 
-![](images/info.svg) Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
+- Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
 
 ![](images/download.ispw.repository.members.png)
 
