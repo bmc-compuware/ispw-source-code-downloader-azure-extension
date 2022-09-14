@@ -8,12 +8,11 @@ The BMC ISPW Source Code Downloader extension allows users to download ISPW memb
 ## Prerequisites
 
 The following are required to use this plugin:
-- Local Azure DevOps Server.
+- On Premise Azure DevOps Server.
 - BMC common configuration Azure extension.
 - Topaz Workbench CLI.
 - Host Communications Interface.
-
-Note: This extension version is only supported with local Azure Devops Server, it will not work with Azure Cloud. In future versions of this extension, we will support Azure cloud.
+.
 
 ## Installing extensions in a Azure Devops Server Instance
 
