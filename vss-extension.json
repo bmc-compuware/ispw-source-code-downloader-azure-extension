@@ -19,11 +19,11 @@
     },
     "repository": {
         "type": "git",
-        "uri": "https://github.com/jarora8/ispw-source-code-downloader"
+        "uri": "https://github.com/bmc-compuware/ispw-source-code-downloader-azure-extension"
     },
     "links": {
         "getstarted": {
-            "uri": "https://github.com/jarora8/ispw-source-code-downloader/blob/main/readme.md"
+            "uri": "https://github.com/bmc-compuware/ispw-source-code-downloader-azure-extension/blob/master/README.md"
         },
         "support": {
             "uri": "https://support.bmc.com"
