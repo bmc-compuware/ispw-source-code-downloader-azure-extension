@@ -3,14 +3,14 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC ISPW Source Code Downloader",
     "public": false,
-    "version": "5.70.0",
-    "publisher": "JalajPrivatePublisher",
+    "version": "1.0.0",
+    "publisher": "BMCCompuware",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Extension 5.70 used for downloading source from ISPW Repository and Containers",
+    "description": "Extension 1.0.0 used for downloading source from ISPW Repository and Containers",
     "categories": [
         "Azure Pipelines"
     ],
@@ -26,8 +26,12 @@
             "uri": "https://github.com/bmc-compuware/ispw-source-code-downloader-azure-extension/blob/master/README.md"
         },
         "support": {
-            "uri": "https://support.bmc.com"
+            "uri": "https://support.bmc.com"     
+        },
+        "LICENSE":{
+            "uri":"https://github.com/bmc-compuware/ispw-source-code-downloader-azure-extension/blob/master/LICENSE"
         }
+
     },
     "content": {
         "details": {

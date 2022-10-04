@@ -6,10 +6,10 @@
     "description": "Task 5.70 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
-    "author": "Jalaj Arora BMC",
+    "author": "BMC Software",
     "version": {
-        "Major": 5,
-        "Minor": 70,
+        "Major": 1,
+        "Minor": 0,
         "Patch": 0
     },
     "instanceNameFormat": "Echo instanceName",
