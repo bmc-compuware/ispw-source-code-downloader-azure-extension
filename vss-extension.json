@@ -3,7 +3,7 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC ISPW Source Code Downloader",
     "public": true,
-    "version": "1.0.16",
+    "version": "1.0.17",
     "publisher": "BMCCompuware",
     "targets": [
         {
@@ -28,7 +28,7 @@
         "support": {
             "uri": "https://support.bmc.com"     
         },
-        "LICENSE":{
+        "license":{
             "uri":"https://github.com/bmc-compuware/ispw-source-code-downloader-azure-extension/master/LICENSE"
         }
 
@@ -36,7 +36,11 @@
     "content": {
         "details": {
             "path": "README.md"
+        },
+		"license": {
+            "path": "LICENSE"
         }
+		
     },
     "tags": [
         "BMC",
