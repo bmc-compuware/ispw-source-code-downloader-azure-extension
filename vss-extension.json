@@ -3,7 +3,7 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC ISPW Source Code Downloader",
     "public": true,
-    "version": "1.0.17",
+    "version": "1.2.1",
     "publisher": "BMCCompuware",
     "targets": [
         {

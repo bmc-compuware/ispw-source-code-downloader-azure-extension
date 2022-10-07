@@ -3,14 +3,14 @@
     "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1890",
     "name": "downloadertask",
     "friendlyName": "BMC ISPW Source Code Downloader",
-    "description": "Task 5.70 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
+    "description": "Task 1.0.1 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "BMC Software",
     "version": {
         "Major": 1,
-        "Minor": 1,
-        "Patch": 15
+        "Minor": 0,
+        "Patch": 1
     },
     "instanceNameFormat": "Echo instanceName",
     "inputs": [
@@ -212,14 +212,14 @@
         {
             "endpointId": "tfs:teamfoundation",
             "target": "connectionId",
-            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/RiteshChaudhari/compuware-common-config-extension/Data/Scopes/Default/Current/Collections/%24settings/Documents/hostconnection",
+            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/hostconnection",
             "resultSelector": "jsonpath:$.value[*]",
 			"resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
         },
         {
             "endpointId": "tfs:teamfoundation",
             "target": "windowsTopazWorkbenchCliHome",
-            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/RiteshChaudhari/compuware-common-config-extension/Data/Scopes/Default/Current/Collections/%24settings/Documents/windows_CLI",
+            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/windows_CLI",
             "resultSelector": "jsonpath:$.value"
         }
     ],
