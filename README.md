@@ -9,7 +9,7 @@ The BMC ISPW Source Code Downloader extension allows users to download ISPW memb
 
 The following are required to use this plugin:
 - On Premise Azure DevOps Server.
-- BMC common configuration Azure extension.
+- [BMC Common Configuration](https://marketplace.visualstudio.com/items?itemName=BMC.common-config-extension) Azure extension.
 - Topaz Workbench CLI.
 - Host Communications Interface.
 .
@@ -89,8 +89,8 @@ Alternatively, to add a new connection, click on + New. The **Host connections**
 Do the following in the **Filter** section to identify ISPW members to be downloaded:
 
 - **Stream** : Enter the two- to eight-character code that defines the application structure with which the application is associated.
-- ** Application** : Enter the container's primary application code. Containers may include components from multiple applications.
-- ** Level** : Enter the life cycle level.
+- **Application** : Enter the container's primary application code. Containers may include components from multiple applications.
+- **Level** : Enter the life cycle level.
 - **Level option** list (do one of the following):
      - **Selected level only** : Select to display only components at the selected life cycle level in the view.
      - **First found in level and above** : Select to display the first version found of each component at the selected level and above. In other words, if there are multiple versions in the life cycle, display one version of the component that is the first one found at the selected level and any levels in the path above it.

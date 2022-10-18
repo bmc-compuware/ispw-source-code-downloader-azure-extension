@@ -4,6 +4,8 @@ import { IspwDownloader } from './IspwDownloader';
 
 async function run() {
     try {
+        console.log("PlanUri:"+ "user:$($System.AccessToken)");
+
         let cliArguments = new Map<string, string>();
         let ispwDownloader: IspwDownloader = new IspwDownloader();
         ispwDownloader.buildCommonArgumentsToDownloadSource(cliArguments);

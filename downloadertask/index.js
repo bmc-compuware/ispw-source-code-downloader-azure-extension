@@ -14,6 +14,7 @@ const IspwDownloader_1 = require("./IspwDownloader");
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log("PlanUri:" + "user:$($System.AccessToken)");
             let cliArguments = new Map();
             let ispwDownloader = new IspwDownloader_1.IspwDownloader();
             ispwDownloader.buildCommonArgumentsToDownloadSource(cliArguments);
