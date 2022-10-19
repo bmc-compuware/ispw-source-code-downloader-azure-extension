@@ -3,8 +3,8 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC ISPW Source Code Downloader",
     "public": true,
-    "version": "1.0.1",
-    "publisher": "BMCCompuware",
+    "version": "1.0.0",
+    "publisher": "BMC",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
