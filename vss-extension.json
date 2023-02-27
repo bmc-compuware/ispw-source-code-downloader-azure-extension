@@ -1,16 +1,16 @@
 {
     "manifestVersion": 1,
-    "id": "ispw-source-code-downloader",
-    "name": "BMC ISPW Source Code Downloader",
-    "public": true,
-    "version": "1.0.0",
-    "publisher": "BMC",
+    "id": "ispw-source-code-downloader-test",
+    "name": "BMC ISPW Source Code Downloader Test",
+    "public": false,
+    "version": "1.0.9",
+    "publisher": "JalajPrivatePublisher",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Extension 1.0.0 used for downloading source from ISPW Repository and Containers",
+    "description": "Extension 1.0.9 Jalaj used for downloading source from ISPW Repository and Containers",
     "categories": [
         "Azure Pipelines"
     ],
