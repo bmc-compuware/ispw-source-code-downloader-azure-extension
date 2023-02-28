@@ -122,7 +122,6 @@ export class IspwDownloader {
     */
     downloadContainerSource(cliArguments: any): void {
         let command = this.getCommand(cliArguments);
-        console.log(command);
         //Calling command
         if (command != undefined) {
             var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
@@ -179,11 +178,9 @@ export class IspwDownloader {
         const levelOption: string | undefined = tl.getInput('levelOption', false);
         if (levelOption != undefined) {
             if (levelOption == 'SelectedLevelOnly') {
-                console.log("Downloading Selected Level Only");
                 cliArguments.set("levelOption", '0');
             }
             else if (levelOption == 'FirstFoundLevelAndAbove') {
-                console.log("Downloading First Found Level and Above");
                 cliArguments.set("levelOption", '1');
             }
         }
@@ -237,7 +234,6 @@ export class IspwDownloader {
             default:
                 tl.setResult(tl.TaskResult.Failed, "Unsupported operating system!! Currently it only supports Windows and Linux Operating System");
         }
-        console.log("Inside command function" + command);
         return command;
     }
 
@@ -247,7 +243,6 @@ export class IspwDownloader {
     */
     downloadRepositorySource(cliArguments: any): void {
         let command = this.getCommand(cliArguments);
-        console.log(command);
         //Calling command
         if (command != undefined) {
             var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
