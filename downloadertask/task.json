@@ -3,13 +3,13 @@
     "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1891",
     "name": "downloadertask",
     "friendlyName": "BMC ISPW Source Code Downloader",
-    "description": "Task 1.0.1 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
+    "description": "Task 1.1.0 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "BMC Software",
     "version": {
         "Major": 1,
-        "Minor": 0,
+        "Minor": 1,
         "Patch": 0
     },
     "instanceNameFormat": "Echo instanceName",
@@ -52,15 +52,23 @@
             "label": "Windows Topaz Workbench CLI Home",
             "required": true,
             "defaultValue": "",
-            "helpMarkDown": "This field specifies the path of installed Topaz Workbench CLI. This can be configured in the Common Configuration Extension."
+            "helpMarkDown": "This field specifies the path of installed Topaz Workbench CLI on Windows machine. This can be configured in the Common Configuration Extension."
         },
         {
-            "name": "windowsSourceDownloadLocation",
+            "name": "linuxTopazWorkbenchCliHome",
+            "type": "pickList",
+            "label": "Linux Topaz Workbench CLI Home",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "This field specifies the path of installed Topaz Workbench CLI on Linux machine. This can be configured in the Common Configuration Extension."
+        },
+        {
+            "name": "sourceDownloadLocation",
             "type": "string",
-            "label": "Windows Source Download Location",
+            "label": "Source Download Location",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Absolute path to a windows directory where source will be downloaded to . Example: C:\\TopazISPW\\DownloadedSource."
+            "helpMarkDown": "Absolute path to a directory where source will be downloaded to . Example: C:\\TopazISPW\\DownloadedSource."
         },
         {
             "name": "downloadSourceType",
@@ -131,6 +139,15 @@
             "required": true,
             "defaultValue": "",
             "helpMarkDown": "The container's primary application code. Containers may include components from multiple applications.",
+            "visibleRule": "downloadSourceType=Repository"
+        },
+        {
+            "name": "subAppl",
+            "type": "string",
+            "label": "SubAppl",
+            "required": false,
+            "defaultValue": "",
+            "helpMarkDown": "The container's primary subapplication code. Containers may include components from multiple subapplications.",
             "visibleRule": "downloadSourceType=Repository"
         },
         {
@@ -210,16 +227,22 @@
     ],
 	"dataSourceBindings": [
         {
-            "endpointId": "tfs:teamfoundation",
+            "endpointId": "tfs:ems",
             "target": "connectionId",
             "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/hostconnection",
             "resultSelector": "jsonpath:$.value[*]",
 			"resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
         },
         {
-            "endpointId": "tfs:teamfoundation",
+            "endpointId": "tfs:ems",
             "target": "windowsTopazWorkbenchCliHome",
             "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/windows_CLI",
+            "resultSelector": "jsonpath:$.value"
+        },
+        {
+            "endpointId": "tfs:ems",
+            "target": "linuxTopazWorkbenchCliHome",
+            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/linux_CLI",
             "resultSelector": "jsonpath:$.value"
         }
     ],

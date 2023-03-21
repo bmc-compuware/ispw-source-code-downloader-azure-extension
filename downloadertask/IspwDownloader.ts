@@ -18,7 +18,7 @@ export class IspwDownloader {
             var codePageWithSpaces = connection[1];
             var codePage = codePageWithSpaces.split(' ')[0];
             cliArguments.set("codePage", codePage);
-
+            
             var hostPort = connection[0].split(':');
             var host = hostPort[0];
             cliArguments.set("host", host);
@@ -32,9 +32,14 @@ export class IspwDownloader {
             cliArguments.set("windowsTopazWorkbenchCliHome", windowsTopazWorkbenchCliHome);
         }
 
-        const windowsSourceDownloadLocation: string | undefined = tl.getInput('windowsSourceDownloadLocation', true);
-        if (windowsSourceDownloadLocation != undefined) {
-            cliArguments.set("windowsSourceDownloadLocation", windowsSourceDownloadLocation);
+        const linuxTopazWorkbenchCliHome: string | undefined = tl.getInput('linuxTopazWorkbenchCliHome', false);
+        if (linuxTopazWorkbenchCliHome != undefined) {
+            cliArguments.set("linuxTopazWorkbenchCliHome", linuxTopazWorkbenchCliHome);
+        }
+
+        const sourceDownloadLocation: string | undefined = tl.getInput('sourceDownloadLocation', true);
+        if (sourceDownloadLocation != undefined) {
+            cliArguments.set("sourceDownloadLocation", sourceDownloadLocation);
         }
 
         const userId: string | undefined = tl.getInput('ispwUserId', true);
@@ -51,7 +56,7 @@ export class IspwDownloader {
         if (runtimeConfig != undefined) {
             cliArguments.set("runtimeConfig", runtimeConfig);
         }
-        else{
+        else {
             cliArguments.set("runtimeConfig", "");
         }
 
@@ -98,7 +103,7 @@ export class IspwDownloader {
         if (componentType != undefined) {
             cliArguments.set("componentType", componentType);
         }
-        else{
+        else {
             cliArguments.set("componentType", "");
         }
 
@@ -106,7 +111,7 @@ export class IspwDownloader {
         if (taskLevel != undefined) {
             cliArguments.set("taskLevel", taskLevel);
         }
-        else{
+        else {
             cliArguments.set("taskLevel", "");
         }
     }
@@ -116,35 +121,37 @@ export class IspwDownloader {
     containers types(Assignment/Set/Release)
     */
     downloadContainerSource(cliArguments: any): void {
-        //Calling bat command
-        var bat = require.resolve(cliArguments.get("windowsTopazWorkbenchCliHome") + '/SCMDownloaderCLI.bat');
-        var ls = spawn(bat, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
-            cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("windowsSourceDownloadLocation"),
-            '-scm', 'ispwc', '-ispwContainerName', cliArguments.get("containerId"), '-ispwContainerType', cliArguments.get("container"),
-            '-ispwComponentType', cliArguments.get("componentType"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
-            '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwServerLevel', cliArguments.get("taskLevel"),
-            '-ispwServerConfig', cliArguments.get("runtimeConfig")
-        ]);
-        console.log(ls);
+        let command = this.getCommand(cliArguments);
+        //Calling command
+        if (command != undefined) {
+            var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
+                cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
+                '-scm', 'ispwc', '-ispwContainerName', cliArguments.get("containerId"), '-ispwContainerType', cliArguments.get("container"),
+                '-ispwComponentType', cliArguments.get("componentType"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
+                '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwServerLevel', cliArguments.get("taskLevel"),
+                '-ispwServerConfig', cliArguments.get("runtimeConfig")
+            ]);
+            console.log(ls);
 
-        ls.stdout.on('data', function (data) {
-            console.log('stdout: ' + data);
-        });
+            ls.stdout.on('data', function (data) {
+                console.log('stdout: ' + data);
+            });
 
-        ls.stderr.on('data', function (data) {
-            console.log('stderr: ' + data);
-        });
+            ls.stderr.on('data', function (data) {
+                console.log('stderr: ' + data);
+            });
 
-        ls.on('exit', function (code) {
-            console.log('child process exited with code ' + code);
-        });
+            ls.on('exit', function (code) {
+                console.log('child process exited with code ' + code);
+            });
+        }
     }
 
     /*  
     Function for building parameters which we pass for 
     downloading source from ISPW Repository.
     */
-    buildCLIArgumentsToDownloadRepository(cliArguments: any):void{
+    buildCLIArgumentsToDownloadRepository(cliArguments: any): void {
         const stream: string | undefined = tl.getInput('stream', true);
         if (stream != undefined) {
             cliArguments.set("stream", stream);
@@ -159,7 +166,7 @@ export class IspwDownloader {
         if (subAppl != undefined) {
             cliArguments.set("subAppl", subAppl);
         }
-        else{
+        else {
             cliArguments.set("subAppl", "");
         }
 
@@ -170,14 +177,10 @@ export class IspwDownloader {
 
         const levelOption: string | undefined = tl.getInput('levelOption', false);
         if (levelOption != undefined) {
-            if(levelOption == 'SelectedLevelOnly')
-            {
-                console.log("Downloading Selected Level Only");
+            if (levelOption == 'SelectedLevelOnly') {
                 cliArguments.set("levelOption", '0');
             }
-            else if(levelOption == 'FirstFoundLevelAndAbove')
-            {
-                console.log("Downloading First Found Level and Above");
+            else if (levelOption == 'FirstFoundLevelAndAbove') {
                 cliArguments.set("levelOption", '1');
             }
         }
@@ -185,12 +188,11 @@ export class IspwDownloader {
         const componentTypes: string | undefined = tl.getInput('componentTypes', false);
         if (componentTypes != undefined) {
             cliArguments.set("componentTypes", componentTypes);
-            if (componentTypes.length != 0)
-            {
+            if (componentTypes.length != 0) {
                 cliArguments.set("ispwFilterFiles", true);
             }
         }
-        else{
+        else {
             cliArguments.set("componentTypes", "");
             cliArguments.set("ispwFilterFiles", false);
         }
@@ -198,12 +200,11 @@ export class IspwDownloader {
         const applicationRootFolderNames: string | undefined = tl.getInput('applicationRootFolderNames', false);
         if (applicationRootFolderNames != undefined) {
             cliArguments.set("applicationRootFolderNames", applicationRootFolderNames);
-            if (applicationRootFolderNames.length != 0)
-            {
+            if (applicationRootFolderNames.length != 0) {
                 cliArguments.set("ispwFilterFolders", true);
             }
         }
-        else{
+        else {
             cliArguments.set("applicationRootFolderNames", "");
             cliArguments.set("ispwFilterFolders", false);
         }
@@ -215,40 +216,65 @@ export class IspwDownloader {
     }
 
     /*  
+    Function for getting command based on 
+    Operating system Windows/Linux
+    */
+    getCommand(cliArguments: any): string | undefined {
+        //Windows = 0,
+        //MacOS = 1,
+        //Linux = 2
+        let command;
+        switch (tl.getPlatform()) {
+            case 0:
+                command = require.resolve(cliArguments.get("windowsTopazWorkbenchCliHome") + '/SCMDownloaderCLI.bat');
+                break;
+            case 2:
+                command = require.resolve(cliArguments.get("linuxTopazWorkbenchCliHome") + '/SCMDownloaderCLI.sh');
+                break;
+            default:
+                tl.setResult(tl.TaskResult.Failed, "Unsupported operating system!! Currently it only supports Windows and Linux Operating System");
+        }
+        return command;
+    }
+
+    /*  
     Function for downloading source from 
     ISPW Repository
     */
     downloadRepositorySource(cliArguments: any): void {
-        //Calling bat command
-        var bat = require.resolve(cliArguments.get("windowsTopazWorkbenchCliHome") + '/SCMDownloaderCLI.bat');
-        var ls = spawn(bat, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
-            cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("windowsSourceDownloadLocation"),
-            '-scm', 'ISPW', '-ispwServerConfig', cliArguments.get("runtimeConfig"),'-ispwServerStream', cliArguments.get("stream"), '-ispwServerApp', cliArguments.get("application"),
-            '-ispwServerLevel', cliArguments.get("repositoryLevel"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
-            '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwLevelOption', cliArguments.get("levelOption"),
-            '-ispwComponentType',cliArguments.get("componentTypes"),'-ispwFolderName',cliArguments.get("applicationRootFolderNames"),
-            '-ispwDownloadWithCompileOnly',cliArguments.get("downloadCompileOnly"), '-ispwFilterFiles',
-            cliArguments.get("ispwFilterFiles"),'-ispwFilterFolders',cliArguments.get("ispwFilterFolders")
-        ]);
-        console.log(ls);
+        let command = this.getCommand(cliArguments);
+        //Calling command
+        if (command != undefined) {
+            var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
+                cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
+                '-scm', 'ISPW', '-ispwServerConfig', cliArguments.get("runtimeConfig"), '-ispwServerStream', cliArguments.get("stream"), '-ispwServerApp', cliArguments.get("application"),
+                '-ispwServerSubAppl', cliArguments.get("subAppl"), '-ispwServerLevel', cliArguments.get("repositoryLevel"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
+                '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwLevelOption', cliArguments.get("levelOption"),
+                '-ispwComponentType', cliArguments.get("componentTypes"), '-ispwFolderName', cliArguments.get("applicationRootFolderNames"),
+                '-ispwDownloadWithCompileOnly', cliArguments.get("downloadCompileOnly"), '-ispwFilterFiles',
+                cliArguments.get("ispwFilterFiles"), '-ispwFilterFolders', cliArguments.get("ispwFilterFolders")
+            ]);
+            console.log(ls);
 
-        ls.stdout.on('data', function (data) {
-            console.log('stdout: ' + data);
-        });
+            ls.stdout.on('data', function (data) {
+                console.log('stdout: ' + data);
+            });
 
-        ls.stderr.on('data', function (data) {
-            console.log('stderr: ' + data);
-        });
+            ls.stderr.on('data', function (data) {
+                console.log('stderr: ' + data);
+            });
 
-        ls.on('exit', function (code) {
-            console.log('child process exited with code ' + code);
-            if(code!=null && code!=0)
-            {
-                tl.setResult(tl.TaskResult.Failed, " An error may have occurred. Please see task logs or see the log file: "+cliArguments.get("windowsTopazWorkbenchCliHome")+"\\TopazBatchWkspc\\.metadata\\.log.");
-            }
-        });
-
-        
-
+            ls.on('exit', function (code) {
+                console.log('child process exited with code ' + code);
+                if (code != null && code != 0) {
+                    if (tl.getPlatform() == 0) {
+                        tl.setResult(tl.TaskResult.Failed, " An error may have occurred. Please see task logs or see the log file: " + cliArguments.get("windowsTopazWorkbenchCliHome") + "\\TopazBatchWkspc\\.metadata\\.log.");
+                    }
+                    else {
+                        tl.setResult(tl.TaskResult.Failed, " An error may have occurred. Please see task logs or see the log file");
+                    }
+                }
+            });
+        }
     }
 }
