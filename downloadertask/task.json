@@ -2,8 +2,8 @@
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1891",
     "name": "downloadertask",
-    "friendlyName": "BMC ISPW Source Code Downloader",
-    "description": "Task 1.1.0 used for downloading source from ISPW Repository or containers like Assignment, Set or Release.",
+    "friendlyName": "BMC AMI DevX Source Code Downloader",
+    "description": "Task 1.1.0 used for downloading source from Code Pipeline Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "BMC Software",
@@ -33,10 +33,10 @@
 		{
             "name": "ispwUserId",
             "type": "string",
-            "label": "ISPW User Id",
+            "label": "Code Pipeline User Id",
 		    "defaultValue": "",
             "required": true,
-            "helpMarkDown": "ISPW User Id."
+            "helpMarkDown": "Code Pipeline User Id."
         },
         {
             "name": "password",
@@ -44,7 +44,7 @@
             "label": "Password",
 		    "defaultValue": "",
             "required": true,
-            "helpMarkDown": "ISPW Password. In this feild, please pass pipeline variable name which is stored as secret in Azure pipeline. Example $(variablename)" 
+            "helpMarkDown": "Code Pipeline Password. In this feild, please pass pipeline variable name which is stored as secret in Azure pipeline. Example $(variablename)" 
         },
         {
             "name": "windowsTopazWorkbenchCliHome",
@@ -76,10 +76,10 @@
             "label": "Download Source from: ",
             "required": true,
             "defaultValue": "Container",
-            "helpMarkDown": "Download source from ISPW repository or different containers types (Assignment/Set/Release).",
+            "helpMarkDown": "Download source from Code Pipeline repository or different containers types (Assignment/Set/Release).",
             "options": {
-              "Repository": "ISPW Repository",
-              "Container": "ISPW Container"
+              "Repository": "Code Pipeline Repository",
+              "Container": "Code Pipeline Container"
             }
         },
         {
