@@ -49,18 +49,18 @@
         {
             "name": "windowsTopazWorkbenchCliHome",
             "type": "pickList",
-            "label": "Windows Topaz Workbench CLI Home",
+            "label": "Windows Workbench CLI Home",
             "required": true,
             "defaultValue": "",
-            "helpMarkDown": "This field specifies the path of installed Topaz Workbench CLI on Windows machine. This can be configured in the Common Configuration Extension."
+            "helpMarkDown": "This field specifies the path of installed Workbench CLI on Windows machine. This can be configured in the Common Configuration Extension."
         },
         {
             "name": "linuxTopazWorkbenchCliHome",
             "type": "pickList",
-            "label": "Linux Topaz Workbench CLI Home",
+            "label": "Linux Workbench CLI Home",
             "required": false,
             "defaultValue": "",
-            "helpMarkDown": "This field specifies the path of installed Topaz Workbench CLI on Linux machine. This can be configured in the Common Configuration Extension."
+            "helpMarkDown": "This field specifies the path of installed Workbench CLI on Linux machine. This can be configured in the Common Configuration Extension."
         },
         {
             "name": "sourceDownloadLocation",
