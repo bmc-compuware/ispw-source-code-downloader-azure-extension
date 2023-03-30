@@ -1,4 +1,4 @@
-# BMC AMI DevX Source Code Downloader (Source Code Downloader)
+# BMC AMI DevX Code Pipeline Source Code Downloader (Source Code Downloader)
 ![](images/ISPW_marble.png)
 
 ## Overview
@@ -17,7 +17,7 @@ The following are required to use this plugin:
 
 ## Installing extensions in a Azure Devops Server Instance
 
-1. Install the BMC AMI DevX Common Configuration extension and BMC AMI DevX Source Code Downloader extension according to the Azure Devops instructions for installing extensions. 
+1. Install the BMC AMI DevX Common Configuration extension and BMC AMI DevX Code Pipeline Source Code Downloader extension according to the Azure Devops instructions for installing extensions. 
 2. Install the Workbench CLI on the machine in which Azure Devops Server is running that will execute the extension. The Workbench CLI is available in the Workbench installation package. If you do not have the installation package, please visit [support.bmc.com](https://support.bmc.com/). 
 
 ## Configuring for Workbench CLI & Host Connections
@@ -30,9 +30,9 @@ In order to download Code Pipeline members you will need to point to an installe
 
 This integration allows downloading of Code Pipeline Container members from the mainframe to the PC.
 
-While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Source Code Downloader" by clicking + sign on Agent Job. 
+While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Code Pipeline Source Code Downloader" by clicking + sign on Agent Job. 
 
-This BMC AMI DevX Source Code Downloader task has following parameters:
+This BMC AMI DevX Code Pipeline Source Code Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
@@ -73,9 +73,9 @@ Run the job, which by default the following occurs:
 
 This integration allows downloading of Code Pipeline Repository members from the mainframe to the PC.
 
-While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Source Code Downloader" by clicking + sign on Agent Job. 
+While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Code Pipeline Source Code Downloader" by clicking + sign on Agent Job. 
 
-This BMC AMI DevX Source Code Downloader task has following parameters:
+This BMC AMI DevX Code Pipeline Source Code Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 

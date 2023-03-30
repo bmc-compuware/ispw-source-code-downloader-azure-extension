@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "ispw-source-code-downloader",
-    "name": "BMC AMI DevX Source Code Downloader",
+    "name": "BMC AMI DevX Code Pipeline Source Code Downloader",
     "public": true,
     "version": "1.1.0",
     "publisher": "BMC",
