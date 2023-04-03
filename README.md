@@ -1,51 +1,51 @@
-# BMC ISPW Source Code Downloader
+# BMC AMI DevX Code Pipeline Source Code Downloader (Source Code Downloader)
 ![](images/ISPW_marble.png)
 
 ## Overview
 
-The BMC ISPW Source Code Downloader extension allows users to download ISPW members from the mainframe to the PC. Source can then be accessed on the PC, for example, for SonarQube analysis and reporting.
+The Source Code Downloader extension allows users to download Code Pipeline members from the mainframe to the PC. Source can then be accessed on the PC, for example, for SonarQube analysis and reporting.
 
 ## Prerequisites
 
 The following are required to use this plugin:
 - Azure Cloud or On Premise Azure DevOps Server.
-- [Azure Pipelines agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser): Self Hosted Agents setup on which Topaz WorkBench CLI will be installed. 
+- [Azure Pipelines agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser): Self Hosted Agents setup on which WorkBench CLI will be installed. 
 - [BMC Common Configuration](https://marketplace.visualstudio.com/items?itemName=BMC.common-config-extension) Azure extension.
-- Topaz Workbench CLI.
+- Workbench CLI.
 - Host Communications Interface.
-.
+
 
 ## Installing extensions in a Azure Devops Server Instance
 
-1. Install the BMC common configuration extension and BMC ISPW Source Code Downloader extension according to the Azure Devops instructions for installing extensions. 
-2. Install the Topaz Workbench CLI on the machine in which Azure Devops Server is running that will execute the extension. The Topaz Workbench CLI is available in the Topaz Workbench installation package. If you do not have the installation package, please visit [support.bmc.com](https://support.bmc.com/). 
+1. Install the BMC AMI DevX Common Configuration extension and BMC AMI DevX Code Pipeline Source Code Downloader extension according to the Azure Devops instructions for installing extensions. 
+2. Install the Workbench CLI on the machine in which Azure Devops Server is running that will execute the extension. The Workbench CLI is available in the Workbench installation package. If you do not have the installation package, please visit [support.bmc.com](https://support.bmc.com/). 
 
-## Configuring for Topaz Workbench CLI & Host Connections
+## Configuring for Workbench CLI & Host Connections
 
-In order to download ISPW members you will need to point to an installed Topaz Workbench Command Line Interface (CLI). The Topaz Workbench CLI will work with host connection(s) you also need to configure to download ISPW members.
+In order to download Code Pipeline members you will need to point to an installed Workbench Command Line Interface (CLI). The Workbench CLI will work with host connection(s) you also need to configure to download Code Pipeline members.
 
 ![](images/ispw.common.config.png)
 
-### Downloading ISPW Container members
+### Downloading Code Pipeline Container members
 
-This integration allows downloading of ISPW Container members from the mainframe to the PC.
+This integration allows downloading of Code Pipeline Container members from the mainframe to the PC.
 
-While creating the new Azure pipeline, we can add a new task "BMC ISPW Source Downloader" by clicking + sign on Agent Job. 
+While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Code Pipeline Source Code Downloader" by clicking + sign on Agent Job. 
 
-This BMC ISPW Source Downloader task has following parameters:
+This BMC AMI DevX Code Pipeline Source Code Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
-- Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
+- Alternatively, to add a new connection, click on + New. The **Host connections** section of the Common configuration tab appears so a connection can be added.
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
-- **ISPW User Id** : Select the ISPW user id to use for logging onto the z/OS host.
+- **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
 
 - **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
 
 
-Do the following in the **Filter** section to identify ISPW members to be downloaded:
+Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
 - **Container name** : Enter the name of the container to target for the download.
 
@@ -62,20 +62,20 @@ Do the following in the **Filter** section to identify ISPW members to be downlo
 Click **Save**.
 
 Run the job, which by default the following occurs:
-- Mainframe source is downloaded to the project's or job's workspace into an <ISPW Application name>/MF_Source folder.
-- Folder components are downloaded into an <ISPW Application name> folder.
+- Mainframe source is downloaded to the project's or job's workspace into a <Code Pipeline Application name>/MF_Source folder.
+- Folder components are downloaded into a <Code Pipeline Application name> folder.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
 
 ![](images/Download.ispw.container.members.png)
 
-### Downloading ISPW Repository members
+### Downloading Code Pipeline Repository members
 
-This integration allows downloading of ISPW Repository members from the mainframe to the PC.
+This integration allows downloading of Code Pipeline Repository members from the mainframe to the PC.
 
-While creating the new Azure pipeline, we can add a new task "BMC ISPW Source Downloader" by clicking + sign on Agent Job. 
+While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Code Pipeline Source Code Downloader" by clicking + sign on Agent Job. 
 
-This BMC ISPW Source Downloader task has following parameters:
+This BMC AMI DevX Code Pipeline Source Code Downloader task has following parameters:
 
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
@@ -83,11 +83,11 @@ Alternatively, to add a new connection, click on + New. The **Host connections**
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
-- **ISPW User Id** : Select the ISPW user id to use for logging onto the z/OS host.
+- **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
 
 - **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
 
-Do the following in the **Filter** section to identify ISPW members to be downloaded:
+Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
 - **Stream** : Enter the two- to eight-character code that defines the application structure with which the application is associated.
 - **Application** : Enter the container's primary application code. Containers may include components from multiple applications.
@@ -107,8 +107,8 @@ Do the following in the **Filter** section to identify ISPW members to be downlo
 Click **Save**.
 
 Run the job, which by default the following occurs:
-- Mainframe source is downloaded to the project's or job's workspace into an <ISPW Application name>/MF_Source folder.
-- Folder components are downloaded into an <ISPW Application name> folder.
+- Mainframe source is downloaded to the project's or job's workspace into a <Code Pipeline Application name>/MF_Source folder.
+- Folder components are downloaded into a <Code Pipeline Application name> folder.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
 
@@ -130,7 +130,7 @@ At BMC, we strive to make our products and documentation the best in the industr
 
 - The name, release number, and build number of your product. This information is displayed in the installed extensions page. Apply filter: BMC in order to display all of the installed BMC extension.
 
-- Environment information, such as the operating system and release on which the Topaz CLI is installed.
+- Environment information, such as the operating system and release on which the Workbench CLI is installed.
 
 You can contact BMC in one of the following ways:
 
