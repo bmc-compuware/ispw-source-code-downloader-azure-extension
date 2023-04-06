@@ -1,16 +1,16 @@
 {
     "manifestVersion": 1,
     "id": "ispw-source-code-downloader",
-    "name": "BMC AMI DevX Code Pipeline Source Code Downloader",
+    "name": "BMC AMI DevX Source Code Download",
     "public": true,
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "BMC",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Extension 1.1.0 used for downloading source from Code Pipeline Repository and Containers",
+    "description": "Extension 1.2.0 used for downloading source from Code Pipeline Repository and Containers",
     "categories": [
         "Azure Pipelines"
     ],
@@ -47,7 +47,7 @@
         "AMI",
         "DevX",
         "ISPW",
-        "Source Code Downloader",
+        "Source Code Download",
         "Mainframe",
         "Continuous Integration",
         "Code Pipeline"
