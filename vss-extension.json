@@ -3,7 +3,7 @@
     "id": "ispw-source-code-downloader",
     "name": "BMC AMI DevX Source Code Download",
     "public": true,
-    "version": "1.2.0",
+    "version": "1.2.1",
     "publisher": "BMC",
     "targets": [
         {
