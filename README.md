@@ -61,8 +61,8 @@ Do the following in the **Filter** section to identify Code Pipeline members to 
 Click **Save**.
 
 Run the job, which by default the following occurs:
-- Mainframe source is downloaded to the project's or job's workspace into a <Code Pipeline Application name>/MF_Source folder.
-- Folder components are downloaded into a <Code Pipeline Application name> folder.
+- Mainframe source is downloaded to the project's or job's workspace into a **$(Code_Pipeline_Application)/MF_Source folder**.
+- Folder components are downloaded into a **$(Code_Pipeline_Application)** folder.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
 
@@ -106,8 +106,8 @@ Do the following in the **Filter** section to identify Code Pipeline members to 
 Click **Save**.
 
 Run the job, which by default the following occurs:
-- Mainframe source is downloaded to the project's or job's workspace into a <Code Pipeline Application name>/MF_Source folder.
-- Folder components are downloaded into a <Code Pipeline Application name> folder.
+- Mainframe source is downloaded to the project's or job's workspace into a **$(Code_Pipeline_Application)/MF_Source** folder.
+- Folder components are downloaded into a **$(Code_Pipeline_Application)** folder.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
 
