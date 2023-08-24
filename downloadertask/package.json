@@ -21,7 +21,6 @@
     "@types/q": "^1.5.5"
   },
   "exclusions" :{
-    "mockery" : "any",
-    "shelljs" : "any"
+    "mockery" : "any"
   }
 }
