@@ -13,7 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "azure-pipelines-task-lib": "^4.4.0",
-    "tfx": "^1.1.0",
     "npm-dependency-exclusion": "1.0.2",
     "semver": "5.7.2"
   },
@@ -22,6 +21,7 @@
     "@types/q": "^1.5.5"
   },
   "exclusions" :{
-    "mockery" : "any"
+    "mockery" : "any",
+    "shelljs" : "any"
   }
 }
