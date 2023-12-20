@@ -1,5 +1,6 @@
 import tl = require('azure-pipelines-task-lib/task');
 import { spawn } from 'child_process';
+const CertificateUtils = require("./utils/CertificateUtils");
 
 /*  
    Class used ispw Azure downloader extension for downloading source from ispw repository 
@@ -11,7 +12,7 @@ export class IspwDownloader {
     Function for building common parameters which we pass for 
     downloading source from containers and ispw repositories.
     */
-    buildCommonArgumentsToDownloadSource(cliArguments: any): void {
+    async buildCommonArgumentsToDownloadSource(cliArguments: any): Promise<void> {
         const connectionId: string | undefined = tl.getInput('connectionId', true);
         if (connectionId !== undefined) {
             var connection = connectionId.split('#');
@@ -42,14 +43,25 @@ export class IspwDownloader {
             cliArguments.set("sourceDownloadLocation", sourceDownloadLocation);
         }
 
-        const userId: string | undefined = tl.getInput('ispwUserId', true);
-        if (userId != undefined) {
-            cliArguments.set("userId", userId);
-        }
+        const authenticationType: string = tl.getInputRequired('authenticationType');
+        if (authenticationType == 'USER') {
+            const userId: string | undefined = tl.getInput('ispwUserId', true);
+            if (userId != undefined) {
+                cliArguments.set("userId", userId);
+            }
 
-        const password: string | undefined = tl.getInput('password', true);
-        if (password != undefined) {
-            cliArguments.set("password", password);
+            const password: string | undefined = tl.getInput('password', true);
+            if (password != undefined) {
+                cliArguments.set("password", password);
+            }
+        } else if (authenticationType == 'CERT') {
+            const connectedServiceName: string = tl.getInputRequired('connectedServiceName');
+            const keyvaultName: string = tl.getInputRequired('keyvaultName');
+            const certificateName: string = tl.getInputRequired('certificateName');
+            const certUtils = new CertificateUtils();
+            await certUtils.getCertificate(authenticationType, connectedServiceName, keyvaultName, certificateName).then(function (authenticate: Authenticate) {
+                cliArguments.set('certificate', authenticate.certificate);
+            });
         }
 
         const runtimeConfig: string | undefined = tl.getInput('runtimeConfig', false);
@@ -124,13 +136,24 @@ export class IspwDownloader {
         let command = this.getCommand(cliArguments);
         //Calling command
         if (command != undefined) {
-            var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
-                cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
+            var options = ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
                 '-scm', 'ispwc', '-ispwContainerName', cliArguments.get("containerId"), '-ispwContainerType', cliArguments.get("container"),
                 '-ispwComponentType', cliArguments.get("componentType"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
                 '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwServerLevel', cliArguments.get("taskLevel"),
                 '-ispwServerConfig', cliArguments.get("runtimeConfig")
-            ]);
+            ];
+
+            if (cliArguments.get("certificate") != undefined) {
+                options.push('-certificate');
+                options.push(cliArguments.get("certificate"));
+            } else {
+                options.push('-id');
+                options.push(cliArguments.get("userId"));
+                options.push('-pass');
+                options.push(cliArguments.get("password"));
+            }
+
+            var ls = spawn(command, options);
             console.log(ls);
 
             ls.stdout.on('data', function (data) {
@@ -245,15 +268,25 @@ export class IspwDownloader {
         let command = this.getCommand(cliArguments);
         //Calling command
         if (command != undefined) {
-            var ls = spawn(command, ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-id',
-                cliArguments.get("userId"), '-pass', cliArguments.get("password"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
+            var options = ['-host', cliArguments.get("host"), '-port', cliArguments.get("port"), '-code', cliArguments.get("codePage"), '-targetFolder', cliArguments.get("sourceDownloadLocation"),
                 '-scm', 'ISPW', '-ispwServerConfig', cliArguments.get("runtimeConfig"), '-ispwServerStream', cliArguments.get("stream"), '-ispwServerApp', cliArguments.get("application"),
                 '-ispwServerSubAppl', cliArguments.get("subAppl"), '-ispwServerLevel', cliArguments.get("repositoryLevel"), '-ispwDownloadAll', cliArguments.get("downloadUnchangedSource"),
                 '-ispwDownloadIncl', cliArguments.get("downloadIncludes"), '-ispwLevelOption', cliArguments.get("levelOption"),
                 '-ispwComponentType', cliArguments.get("componentTypes"), '-ispwFolderName', cliArguments.get("applicationRootFolderNames"),
                 '-ispwDownloadWithCompileOnly', cliArguments.get("downloadCompileOnly"), '-ispwFilterFiles',
                 cliArguments.get("ispwFilterFiles"), '-ispwFilterFolders', cliArguments.get("ispwFilterFolders")
-            ]);
+            ];
+            if (cliArguments.get("certificate") != undefined) {
+                options.push('-certificate');
+                options.push(cliArguments.get("certificate"));
+            } else {
+                options.push('-id');
+                options.push(cliArguments.get("userId"));
+                options.push('-pass');
+                options.push(cliArguments.get("password"));
+            }
+            console.log(options);
+            var ls = spawn(command, options);
             console.log(ls);
 
             ls.stdout.on('data', function (data) {

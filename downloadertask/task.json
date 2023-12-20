@@ -1,16 +1,16 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1891",
+    "id": "a1535baf-9f0f-456d-b4a4-5c96da2b1895",
     "name": "downloadertask",
     "friendlyName": "BMC AMI DevX Source Code Download",
-    "description": "Task 1.2.3 used for downloading source from Code Pipeline Repository or containers like Assignment, Set or Release.",
+    "description": "Task 1.2.4 used for downloading source from Code Pipeline Repository or containers like Assignment, Set or Release.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "BMC Software",
     "version": {
         "Major": 1,
         "Minor": 2,
-        "Patch": 3
+        "Patch": 14
     },
     "instanceNameFormat": "Echo instanceName",
     "inputs": [
@@ -30,13 +30,26 @@
             "required": false,
             "helpMarkDown": "The host runtime configuration. See ISPW administrator for valid value. If the value is empty, leave it blank. Example: FOOBAR." 
         },
+        {
+            "name": "authenticationType",
+            "type": "radio",
+            "label": "Authentication : ",
+            "required": true,
+            "defaultValue": "CERT",
+            "helpMarkDown": "Select either Username/Password or PFX Certificate",
+            "options": {
+              "USER": "Username/Password",
+              "CERT": "PFX Certificate"
+            }
+        },
 		{
             "name": "ispwUserId",
             "type": "string",
             "label": "Code Pipeline User Id",
 		    "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Code Pipeline User Id."
+            "helpMarkDown": "Code Pipeline User Id.",
+            "visibleRule": "authenticationType = USER"
         },
         {
             "name": "password",
@@ -44,8 +57,38 @@
             "label": "Password",
 		    "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Code Pipeline Password. In this feild, please pass pipeline variable name which is stored as secret in Azure pipeline. Example $(variablename)" 
+            "helpMarkDown": "Code Pipeline Password. In this feild, please pass pipeline variable name which is stored as secret in Azure pipeline. Example $(variablename)",
+            "visibleRule": "authenticationType = USER"
         },
+        {
+            "name": "connectedServiceName",
+            "aliases": [
+              "azureSubscription"
+            ],
+            "type": "connectedService:AzureRM",
+            "label": "Azure Subscription",
+            "required": true,
+            "visibleRule": "authenticationType = CERT"
+          },
+          {
+            "name": "keyvaultName",
+            "type": "pickList",
+            "label": "Key Vault",
+            "required": true,
+            "helpMarkDown": "Provide the name of an existing key vault",
+            "properties": {
+              "EditableOptions": "True"
+            },
+            "visibleRule": "authenticationType = CERT"
+          },
+          {
+            "name": "certificateName",
+            "type": "string",
+            "label": "Certificate Name",
+            "required": true,
+            "helpMarkDown": "Provide the name of certificate as added in Keyvault",
+            "visibleRule": "authenticationType = CERT"
+          },
         {
             "name": "windowsTopazWorkbenchCliHome",
             "type": "pickList",
@@ -244,10 +287,16 @@
             "target": "linuxTopazWorkbenchCliHome",
             "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/linux_CLI",
             "resultSelector": "jsonpath:$.value"
+        },
+        {
+            "target": "keyvaultName",
+            "endpointId": "$(connectedServiceName)",
+            "dataSourceName": "AzureKeyVaultsListV2",
+            "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\" : \"{{{name}}}\" }"
         }
     ],
     "execution": {
-        "Node10": {
+        "Node16": {
             "target": "index.js"
         }
     }
