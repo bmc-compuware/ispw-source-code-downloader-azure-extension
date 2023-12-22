@@ -39,10 +39,17 @@ This BMC AMI DevX Source Code Download task has following parameters:
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
+- **Authentication** : Mode of authentication i.e. either Username/Password or Certificate based.
+
 - **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
 
 - **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
 
+- **Azure Subscription** : The Azure Subscription under which Key Vault is created. 
+
+- **Key Vault** : Name of Key Vault that holds the Certificate for authentication.
+
+- **Certificate Name** : Name of the certificate as uploaded in Key Vault. (PFX format is supported)
 
 Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
@@ -82,9 +89,17 @@ Alternatively, to add a new connection, click on + New. The **Host connections**
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
+- **Authentication** : Mode of authentication i.e. either Username/Password or Certificate based.
+
 - **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
 
 - **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
+
+- **Azure Subscription** : The Azure Subscription under which Key Vault is created. 
+
+- **Key Vault** : Name of Key Vault that holds the Certificate for authentication.
+
+- **Certificate Name** : Name of the certificate as uploaded in Key Vault. (PFX format is supported)
 
 Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
