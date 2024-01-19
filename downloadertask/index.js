@@ -17,22 +17,23 @@ function run() {
             console.log("PlanUri:" + "user:$($System.AccessToken)");
             let cliArguments = new Map();
             let ispwDownloader = new IspwDownloader_1.IspwDownloader();
-            ispwDownloader.buildCommonArgumentsToDownloadSource(cliArguments);
-            const downloadSourceType = tl.getInput('downloadSourceType', true);
-            if (downloadSourceType != undefined) {
-                if (downloadSourceType == 'Container') {
-                    //Download source from different ISPW container types
-                    console.log("Downloading Container");
-                    ispwDownloader.buildCLIArgumentsToDownloadContainer(cliArguments);
-                    ispwDownloader.downloadContainerSource(cliArguments);
+            yield ispwDownloader.buildCommonArgumentsToDownloadSource(cliArguments).then(function (data) {
+                const downloadSourceType = tl.getInput('downloadSourceType', true);
+                if (downloadSourceType != undefined) {
+                    if (downloadSourceType == 'Container') {
+                        //Download source from different ISPW container types
+                        console.log("Downloading Container");
+                        ispwDownloader.buildCLIArgumentsToDownloadContainer(cliArguments);
+                        ispwDownloader.downloadContainerSource(cliArguments);
+                    }
+                    else if (downloadSourceType == 'Repository') {
+                        //Download source from ISPW Repository
+                        console.log("Downloading Repository");
+                        ispwDownloader.buildCLIArgumentsToDownloadRepository(cliArguments);
+                        ispwDownloader.downloadRepositorySource(cliArguments);
+                    }
                 }
-                else if (downloadSourceType == 'Repository') {
-                    //Download source from ISPW Repository
-                    console.log("Downloading Repository");
-                    ispwDownloader.buildCLIArgumentsToDownloadRepository(cliArguments);
-                    ispwDownloader.downloadRepositorySource(cliArguments);
-                }
-            }
+            });
         }
         catch (err) {
             tl.setResult(tl.TaskResult.Failed, err.message);
