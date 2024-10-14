@@ -11,26 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const tl = require("azure-pipelines-task-lib/task");
 const IspwDownloader_1 = require("./IspwDownloader");
+const ContainerDownloadDTO = require("./transferObj/ContainerDownloadDTO");
+const RepositoryDownloadDTO = require("./transferObj/RepositoryDownloadDTO");
+const Header = require("./transferObj/Header");
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log("PlanUri:" + "user:$($System.AccessToken)");
-            let cliArguments = new Map();
             let ispwDownloader = new IspwDownloader_1.IspwDownloader();
-            yield ispwDownloader.buildCommonArgumentsToDownloadSource(cliArguments).then(function (data) {
+            let header = new Header();
+            yield ispwDownloader.buildHeadersToDownloadSource(header).then(function () {
                 const downloadSourceType = tl.getInput('downloadSourceType', true);
                 if (downloadSourceType != undefined) {
                     if (downloadSourceType == 'Container') {
                         //Download source from different ISPW container types
                         console.log("Downloading Container");
-                        ispwDownloader.buildCLIArgumentsToDownloadContainer(cliArguments);
-                        ispwDownloader.downloadContainerSource(cliArguments);
+                        let containerDownloadDTO = new ContainerDownloadDTO();
+                        ispwDownloader.buildArgumentsToDownloadContainer(containerDownloadDTO);
+                        ispwDownloader.downloadContainerSource(containerDownloadDTO, header);
                     }
                     else if (downloadSourceType == 'Repository') {
                         //Download source from ISPW Repository
                         console.log("Downloading Repository");
-                        ispwDownloader.buildCLIArgumentsToDownloadRepository(cliArguments);
-                        ispwDownloader.downloadRepositorySource(cliArguments);
+                        let repositoryDownloadDTO = new RepositoryDownloadDTO();
+                        ispwDownloader.buildArgumentsToDownloadRepository(repositoryDownloadDTO);
+                        ispwDownloader.downloadRepositorySource(repositoryDownloadDTO, header);
                     }
                 }
             });
