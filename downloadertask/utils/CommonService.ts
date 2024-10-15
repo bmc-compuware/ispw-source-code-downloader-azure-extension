@@ -37,8 +37,9 @@ class CommonService {
         console.error(error.response.data.message);
         tl.setResult(tl.TaskResult.Failed, error.request);
       } else {
-        console.error(error);
-        tl.setResult(tl.TaskResult.Failed, error.message);
+        console.error("Status Code : " + error.response.data.statusCode);
+        console.error("Status Message : " + error.response.data.statusMessage);
+        tl.setResult(tl.TaskResult.Failed, error.response.data.statusMessage);
       }
       return error;
     }

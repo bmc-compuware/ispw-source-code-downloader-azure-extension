@@ -168,14 +168,17 @@ class IspwDownloader {
             url += "/" + header.level;
             const cmnService = new CommonService();
             yield cmnService.doPostRequest(url, header.host, header.port, repositoryDownloadDTO, header.authType, header.cesToken, header.certContent, header.certKey, true, false).then(function (response) {
-                console.debug("response status  : " + response.status);
-                if (response.status == 200) {
-                    var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
-                    _processZIPFile(fileName, response.data);
+                if (response instanceof Error) {
+                    console.log(response);
                 }
                 else {
-                    console.error("Error occurred while fetching the source for stream " + header.stream + ", application : " + header.application + ", subapplication " + header.subAppl + ", level : " + header.level + response.data.message);
-                    throw new Error(response.data.message);
+                    if (response.status == 200) {
+                        var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
+                        _processZIPFile(fileName, response.data);
+                    }
+                    else {
+                        console.error("Error occurred while fetching the source for stream " + header.stream + ", application : " + header.application + ", subapplication " + header.subAppl + ", level : " + header.level + response.data.message);
+                    }
                 }
             });
         });
@@ -192,16 +195,14 @@ function _processZIPFile(fileName, data) {
         console.debug("extracting source...");
         var zip = new AdmZip(filePath);
         var outputFolder = filePath.replace(".zip", "");
-        var zipEntries = zip.getEntries();
-        zipEntries.forEach(function (zipEntry) {
-            console.debug(zipEntry.toString());
-        });
         zip.extractAllTo(outputFolder, true);
         console.debug("source extracted to : " + agentWorkFolder);
-        fs.unlink(fileName, function (err) {
-            console.warn("Deletion of ZIP file failed" + err);
+        fs.unlink(filePath, function (err) {
+            if (err) {
+                console.debug("ZIP file delete failed : " + err);
+            }
+            console.debug("ZIP file deleted successfuly.");
         });
-        console.debug("ZIP files deleted.");
     });
     writer.on('error', function (err) {
         console.error("error thrown while creating ZIP on azure agent." + err);
