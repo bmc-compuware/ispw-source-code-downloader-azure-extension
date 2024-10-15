@@ -99,11 +99,14 @@ export class IspwDownloader {
                 pipe: (arg0: fs.WriteStream) => void;
             }, headers: { 'content-disposition': string }, status: number
         }) {
-            console.log("response status  : " + response.status);
-            if (response.status == 200) {
+            if (response.status && response.status == 200) {
                 var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
                 _processZIPFile(fileName, response.data);
-            } else {
+            } 
+            else if(response instanceof Error) {
+                throw new Error(response.message);
+            }
+            else {
                 console.error("Error occurred while fetching the source for " + header.containerType + " container : " + header.containerId + " : " + response.data.message);
                 throw new Error(response.data.message);
             }

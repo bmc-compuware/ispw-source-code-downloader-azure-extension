@@ -25,21 +25,19 @@ class CommonService {
       }
       let res = await axios.post(url, payload, options);
       return res;
-    } catch (error: any) {
-      console.error("Error : ");
+    } catch (error: any) {      
       if (error.response) {
         let errorMessage = error.response.data.message
           ? error.response.data.message
-          : error.response.data;
-        console.error(errorMessage);
+          : error.response.statusText;
+        console.error("Response recieved : " + error.response.status + " " + error.response.statusText);
         tl.setResult(tl.TaskResult.Failed, errorMessage);
       } else if (error.request) {
         console.error(error.response.data.message);
         tl.setResult(tl.TaskResult.Failed, error.request);
       } else {
-        console.error("Status Code : " + error.response.data.statusCode);
-        console.error("Status Message : " + error.response.data.statusMessage);
-        tl.setResult(tl.TaskResult.Failed, error.response.data.statusMessage);
+        console.error(error);
+        tl.setResult(tl.TaskResult.Failed, error.message);
       }
       return error;
     }
