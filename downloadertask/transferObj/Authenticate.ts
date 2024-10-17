@@ -1,4 +1,4 @@
-class Authenticate implements IspwResponse {
+class Authenticate{
     pkcs: string;
     certificate: string;
     cesToken: string;

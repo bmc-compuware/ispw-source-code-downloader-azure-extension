@@ -9,18 +9,24 @@
     "author": "BMC Software",
     "version": {
         "Major": 1,
-        "Minor": 3,
+        "Minor": 4,
         "Patch": 0
     },
     "instanceNameFormat": "Echo instanceName",
     "inputs": [
         {
+            "name": "cesUrl",
+            "type": "pickList",
+            "label": "CES URL",
+            "required": true,
+            "helpMarkDown": "This field specifies the CES URL. Host connections with CES url can be configured in the Common Configuration Extension."
+        },
+        {
             "name": "connectionId",
             "type": "pickList",
             "label": "Host Connection",
-            "defaultValue": "",
             "required": true,
-            "helpMarkDown": "This field specifies the host connection to use for downloading source. Host connections can be configured in the Common Configuration Extension."
+            "helpMarkDown": "This field specifies the host connection associated with a CES URL. Host connections with CES url can be configured in the Common Configuration Extension."
         },
         {
             "name": "runtimeConfig",
@@ -36,74 +42,50 @@
             "label": "Authentication : ",
             "required": true,
             "defaultValue": "CERT",
-            "helpMarkDown": "Select either Username/Password or PFX Certificate",
+            "helpMarkDown": "Select either Username-Password or PFX Certificate",
             "options": {
-              "USER": "Username/Password",
+              "TOKEN": "CES Token",
               "CERT": "PFX Certificate"
-            }
+            },
+            "visibleRule": "cesUrl StartsWith https:"
         },
 		{
-            "name": "ispwUserId",
+            "name": "cesSecretToken",
             "type": "string",
-            "label": "Code Pipeline User Id",
-		    "defaultValue": "",
+            "label": "CES secret token",
+            "defaultValue": "$(cesToken)",
             "required": true,
-            "helpMarkDown": "Code Pipeline User Id.",
-            "visibleRule": "authenticationType = USER"
-        },
-        {
-            "name": "password",
-            "type": "string",
-            "label": "Password",
-		    "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "Code Pipeline Password. In this feild, please pass pipeline variable name which is stored as secret in Azure pipeline. Example $(variablename)",
-            "visibleRule": "authenticationType = USER"
+            "helpMarkDown": "The available CES secret token to perform Code Pipeline actions for Rest API call. In this feild, please pass pipeline variable name which is storing CES secret token as secret in Azure pipeline. Example $(cesToken).",
+            "visibleRule": "cesUrl NotStartsWith https: || authenticationType = TOKEN"
         },
         {
             "name": "connectedServiceName",
             "aliases": [
-              "azureSubscription"
+                "azureSubscription"
             ],
             "type": "connectedService:AzureRM",
             "label": "Azure Subscription",
             "required": true,
-            "visibleRule": "authenticationType = CERT"
-          },
-          {
+            "visibleRule": "cesUrl StartsWith https: && authenticationType = CERT"
+        },
+        {
             "name": "keyvaultName",
             "type": "pickList",
             "label": "Key Vault",
             "required": true,
             "helpMarkDown": "Provide the name of an existing key vault",
             "properties": {
-              "EditableOptions": "True"
+                "EditableOptions": "True"
             },
-            "visibleRule": "authenticationType = CERT"
-          },
-          {
+            "visibleRule": "cesUrl StartsWith https: && authenticationType = CERT"
+        },
+        {
             "name": "certificateName",
             "type": "string",
             "label": "Certificate Name",
             "required": true,
             "helpMarkDown": "Provide the name of certificate as added in Keyvault",
-            "visibleRule": "authenticationType = CERT"
-          },
-        {
-            "name": "windowsTopazWorkbenchCliHome",
-            "type": "pickList",
-            "label": "Windows Workbench CLI Home",
-            "required": true,
-            "defaultValue": "",
-            "helpMarkDown": "This field specifies the path of installed Workbench CLI on Windows machine. This can be configured in the Common Configuration Extension."
-        },
-        {
-            "name": "linuxTopazWorkbenchCliHome",
-            "type": "pickList",
-            "label": "Linux Workbench CLI Home",
-            "required": false,
-            "defaultValue": "",
-            "helpMarkDown": "This field specifies the path of installed Workbench CLI on Linux machine. This can be configured in the Common Configuration Extension."
+            "visibleRule": "cesUrl StartsWith https: && authenticationType = CERT"
         },
         {
             "name": "sourceDownloadLocation",
@@ -266,33 +248,40 @@
             "required": false,
             "helpMarkDown": "When this box is checked, all files matching the filter will be downloaded, including Compile Only tasks.",
             "visibleRule": "downloadSourceType=Repository"
+        },
+        {
+            "name": "trustAllCerts",
+            "label": "Trust all Certificates",
+            "type": "boolean",
+            "defaultValue": "false",
+            "helpMarkDown": "This allows you to trust self-signed server certificates.\n>Enabling this is not recommended.",
+            "options": {
+              "true": "Yes",
+              "false": "No"
+            },
+            "visibleRule": "cesUrl StartsWith https:"
         }
     ],
 	"dataSourceBindings": [
         {
             "endpointId": "tfs:ems",
-            "target": "connectionId",
+            "target": "cesUrl",
             "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/hostconnection",
             "resultSelector": "jsonpath:$.value[*]",
-			"resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
-        },
-        {
-            "endpointId": "tfs:ems",
-            "target": "windowsTopazWorkbenchCliHome",
-            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/windows_CLI",
-            "resultSelector": "jsonpath:$.value"
-        },
-        {
-            "endpointId": "tfs:ems",
-            "target": "linuxTopazWorkbenchCliHome",
-            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/linux_CLI",
-            "resultSelector": "jsonpath:$.value"
+            "resultTemplate": "{\"Value\":\"{{{ces_url}}}\",\"DisplayValue\":\"{{{ces_url}}}\"}"
         },
         {
             "target": "keyvaultName",
             "endpointId": "$(connectedServiceName)",
             "dataSourceName": "AzureKeyVaultsListV2",
             "resultTemplate": "{ \"Value\" : \"{{{name}}}\", \"DisplayValue\" : \"{{{name}}}\" }"
+        },
+        {
+            "endpointId": "tfs:ems",
+            "target": "connectionId",
+            "endpointUrl": "{{endpoint.url}}/_apis/ExtensionManagement/InstalledExtensions/BMC/common-config-extension/Data/Scopes/Default/Current/Collections/$settings/Documents/hostconnection",
+            "resultSelector": "jsonpath:$.value[*]",
+            "resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
         }
     ],
     "execution": {

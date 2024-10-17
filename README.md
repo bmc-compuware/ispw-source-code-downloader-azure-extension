@@ -10,20 +10,13 @@ The following are required to use this plugin:
 - Azure Cloud or On Premise Azure DevOps Server.
 - [Azure Pipelines agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser): Self Hosted Agents setup on which WorkBench CLI will be installed. 
 - [BMC Common Configuration](https://marketplace.visualstudio.com/items?itemName=BMC.common-config-extension) Azure extension.
-- Workbench CLI.
+- [BMC AMI Common Enterprise Services (minimum version required : 24.01.02)](https://docs.bmc.com/docs/bces2010/introduction-to-bmc-compuware-enterprise-services-1068407133.html)
 - Host Communications Interface.
 
 
 ## Installing extensions in a Azure Devops Server Instance
 
-1. Install the BMC AMI DevX Common Configuration extension and BMC AMI DevX Source Code Download extension according to the Azure Devops instructions for installing extensions. 
-2. Install the Workbench CLI on the machine in which Azure Devops Server is running that will execute the extension. The Workbench CLI is available in the Workbench installation package. If you do not have the installation package, please visit [support.bmc.com](https://support.bmc.com/). 
-
-## Configuring for Workbench CLI & Host Connections
-
-In order to download Code Pipeline members you will need to point to an installed Workbench Command Line Interface (CLI). The Workbench CLI will work with host connection(s) you also need to configure to download Code Pipeline members.
-
-![](images/ispw.common.config.png)
+Install the BMC AMI DevX Common Configuration extension and BMC AMI DevX Source Code Download extension according to the Azure Devops instructions for installing extensions. 
 
 ### Downloading Code Pipeline Container members
 
@@ -33,17 +26,18 @@ While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Sourc
 
 This BMC AMI DevX Source Code Download task has following parameters:
 
+- **CES URL** : Select a URL for Common Enterprise Services (CES). By default it is empty. Please do NOT attach any context
+    path, it should be in the format: [http://host:port](http://hostport).
+
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
 - Alternatively, to add a new connection, click on + New. The **Host connections** section of the Common configuration tab appears so a connection can be added.
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
-- **Authentication** : Mode of authentication i.e. either Username/Password or Certificate based.
+- **Authentication** : Mode of authentication i.e. either CES Token or Certificate based.
 
-- **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
-
-- **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
+- **CES secret token**: The available CES secret token to perform Code Pipeline actions for Rest API call. In this field, please pass pipeline variable name which is storing CES secret token as secret in Azure pipeline. Example $(cesToken).
 
 - **Azure Subscription** : The Azure Subscription under which Key Vault is created. 
 
@@ -51,25 +45,28 @@ This BMC AMI DevX Source Code Download task has following parameters:
 
 - **Certificate Name** : Name of the certificate as uploaded in Key Vault. (PFX format is supported)
 
+- **Source Download Location** : Path to a directory in CES server to download source.
+
 Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
-- **Container name** : Enter the name of the container to target for the download.
-
-- **Container type** list (do one of the following):
+- **Container Type** list (do one of the following):
 
      - **Assignment** : Select if the specified **Container name** is an assignment.
      - **Release** : Select if the specified **Container name** is a release.
      - **Set** : Select if the specified **Container name** is a set.
 
+- **Container Id** : Enter the name of the container to target for the download.
+- **Component Type** : Optionally use to identify components of a specific type to download (such as COB, COPY, or JOB).
 - **Level** : Optionally use to identify components at a specific level in the life cycle to download (such as DEV1, STG1, or PRD).
-- **Component type** : Optionally use to identify components of a specific type to download (such as COB, COPY, or JOB).
 - **Force download of unchanged source** : Optionally use to indicate that all source matching the current filter should be downloaded, regardless of whether it has been changed recently or not. If this box is left unchecked, it will delete any files in the workspace that no longer match the filter specified above. Leaving it unchecked will also only download source that has been changed since the last time the job was run.
+- **Trust all Certificates** : This allows you to trust self-signed server certificates. By default set to false.\n>Enabling this is not recommended.
 
 Click **Save**.
 
 Run the job, which by default the following occurs:
 - Mainframe source is downloaded to the project's or job's workspace into a **$(Code_Pipeline_Application)/MF_Source folder**.
 - Folder components are downloaded into a **$(Code_Pipeline_Application)** folder.
+- Source is downloaded on Azure Agent at the Artifact Staging Directory **$(Build.ArtifactStagingDirectory)**.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extension and refer to the documentation for the SonarQube extenion.
 
@@ -83,23 +80,26 @@ While creating the new Azure pipeline, we can add a new task "BMC AMI DevX Sourc
 
 This BMC AMI DevX Source Code Download task has following parameters:
 
+- **CES URL** : Select a URL for Common Enterprise Services (CES). By default it is empty. Please do NOT attach any context
+    path, it should be in the format: [http://host:port](http://hostport).
+
 - **Host connection** : Select the host connection to be used to connect to the z/OS host.
 
-Alternatively, to add a new connection, click on + New. The **Host connections** section of the Topaz Common configuration tab appears so a connection can be added.
+- Alternatively, to add a new connection, click on + New. The **Host connections** section of the Common configuration tab appears so a connection can be added.
 
 - **Runtime configuration** : Enter the host runtime configuration. To use the default configuration, leave the field blank.
 
-- **Authentication** : Mode of authentication i.e. either Username/Password or Certificate based.
+- **Authentication** : Mode of authentication i.e. either CES Token or Certificate based.
 
-- **Code Pipeline User Id** : Select the Code Pipeline user id to use for logging onto the z/OS host.
-
-- **Password** : Instead of enteriend password directly in this field, In Azure we have azure vault for storing secrets. We can store password as Azure pipeline variable as a secret and use that variable in this field. Example $(variablename)
+- **CES secret token**: The available CES secret token to perform Code Pipeline actions for Rest API call. In this field, please pass pipeline variable name which is storing CES secret token as secret in Azure pipeline. Example $(cesToken).
 
 - **Azure Subscription** : The Azure Subscription under which Key Vault is created. 
 
 - **Key Vault** : Name of Key Vault that holds the Certificate for authentication.
 
 - **Certificate Name** : Name of the certificate as uploaded in Key Vault. (PFX format is supported)
+
+- **Source Download Location** : Path to a directory in CES server to download source.
 
 Do the following in the **Filter** section to identify Code Pipeline members to be downloaded:
 
@@ -111,18 +111,20 @@ Do the following in the **Filter** section to identify Code Pipeline members to 
      - **Selected level only** : Select to display only components at the selected life cycle level in the view.
      - **First found in level and above** : Select to display the first version found of each component at the selected level and above. In other words, if there are multiple versions in the life cycle, display one version of the component that is the first one found at the selected level and any levels in the path above it.
 - **Component types** and/or **Application root folder names** : Optionally use to identify components and application root folders to download.
-      - To download a folder that matches the name specified (and all of its contents) and download all components outside of a folder that match the specified type, enter values in both the **Component types** and **Application root folder names** fields. Enter in the **Component types** field the component type (such as COB, COPY, or JOB) on which to filter. Enter in the **Application root folder names** field the name of the folder on which to filter. For example, entering **COB** in the Component types field and **FolderX** in the **Application root folder names** field will download FolderX and all of its contents, as well as all of the COB files that exist outside of folders.
-      - To download all components of a specified type regardless of whether they are within folders, use only the **Component types** field by entering the component type (such as COB, COPY, or JOB) on which to filter.
-      - To download a folder that matches the name specified (and all of its contents), as well as all components that are not within a folder, use only the **Application root folder names** field by entering the name of the folder on which to filter.
-      - To download all components and folders in the application and level selected, leave both fields empty.
+     - To download a folder that matches the name specified (and all of its contents) and download all components outside of a folder that match the specified type, enter values in both the **Component types** and **Application root folder names** fields. Enter in the **Component types** field the component type (such as COB, COPY, or JOB) on which to filter. Enter in the **Application root folder names** field the name of the folder on which to filter. For example, entering **COB** in the Component types field and **FolderX** in the **Application root folder names** field will download FolderX and all of its contents, as well as all of the COB files that exist outside of folders.
+     - To download all components of a specified type regardless of whether they are within folders, use only the **Component types** field by entering the component type (such as COB, COPY, or JOB) on which to filter.
+     - To download a folder that matches the name specified (and all of its contents), as well as all components that are not within a folder, use only the **Application root folder names** field by entering the name of the folder on which to filter.
+     - To download all components and folders in the application and level selected, leave both fields empty.
       - To download multiple folders or types, comma-separate the values.
-      - **Force download of unchanged source** : Optionally use to indicate that all source matching the current filter should be downloaded, regardless of whether it has been changed recently or not. If this box is left unchecked, it will delete any files in the workspace that no longer match the filter specified above. Leaving it unchecked will also only download source that has been changed since the last time the job was run.
+- **Force download of unchanged source** : Optionally use to indicate that all source matching the current filter should be downloaded, regardless of whether it has been changed recently or not. If this box is left unchecked, it will delete any files in the workspace that no longer match the filter specified above. Leaving it unchecked will also only download source that has been changed since the last time the job was run.
+- **Trust all Certificates** : This allows you to trust self-signed server certificates. By default set to false.\n>Enabling this is not recommended.
 
 Click **Save**.
 
 Run the job, which by default the following occurs:
 - Mainframe source is downloaded to the project's or job's workspace into a **$(Code_Pipeline_Application)/MF_Source** folder.
 - Folder components are downloaded into a **$(Code_Pipeline_Application)** folder.
+- Source is downloaded on Azure Agent at the Artifact Staging Directory **$(Build.ArtifactStagingDirectory)**.
 
 - Optionally, to perform SonarQube analysis, install the SonarQube extnesion and refer to the documentation for the SonarQube extension.
 
@@ -144,12 +146,10 @@ At BMC, we strive to make our products and documentation the best in the industr
 
 - The name, release number, and build number of your product. This information is displayed in the installed extensions page. Apply filter: BMC in order to display all of the installed BMC extension.
 
-- Environment information, such as the operating system and release on which the Workbench CLI is installed.
-
 You can contact BMC in one of the following ways:
 
 
-#### Web
+### Web
 
 You can report issues via BMC Support Center: [https://support.bmc.com](https://support.bmc.com/).
 

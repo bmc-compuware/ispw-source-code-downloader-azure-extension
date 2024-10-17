@@ -12,6 +12,7 @@
   "author": "Jalaj Arora",
   "license": "ISC",
   "dependencies": {
+    "adm-zip": "0.5.16",
     "azure-pipelines-task-lib": "^4.7.0",
     "npm-dependency-exclusion": "1.0.2",
     "semver": "5.7.2"
@@ -19,9 +20,10 @@
   "devDependencies": {
     "@types/node": "^18.7.15",
     "@types/q": "^1.5.5",
-    "axios": "^1.6.0"
+    "@webpack-cli/generators": "^3.0.7",
+    "axios": "1.7.4"
   },
-  "exclusions" :{
-    "mockery" : "any"
+  "exclusions": {
+    "mockery": "any"
   }
 }
