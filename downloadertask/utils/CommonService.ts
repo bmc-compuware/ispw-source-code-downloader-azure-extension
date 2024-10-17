@@ -21,7 +21,7 @@ class CommonService {
       console.log("Starting ISPW Source Download Plugin...");
       if (isPrintEnable) {
         logRequest(url, options, payload, cesToken, "POST");
-        console.log("Request logged successfuly");
+        console.log("Request logged successfully");
       }
       let res = await axios.post(url, payload, options);
       return res;
@@ -91,7 +91,7 @@ function logRequest(
 }
 
 function logResponse(response: string) {
-  console.log("response: " + JSON.stringify(response));
+  console.log("Response: " + JSON.stringify(response));
 }
 
 function getHttpAgent(url: string,

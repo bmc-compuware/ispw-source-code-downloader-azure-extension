@@ -195,22 +195,22 @@ function _processZIPFile(fileName: string, data: { message: string; pipe: (arg0:
     const writer = fs.createWriteStream(filePath);
     data.pipe(writer);
     writer.on('finish', function () {
-        console.debug("finished writing response data.");
-        console.debug("extracting source...");
+        console.debug("Finished writing response data.");
+        console.debug("Extracting source...");
         var zip = new AdmZip(filePath);
         var outputFolder = filePath.replace(".zip","");
         zip.extractAllTo(outputFolder, true);
-        console.debug("source extracted to : " + agentWorkFolder);
+        console.debug("Source extracted to : " + agentWorkFolder);
         fs.unlink(filePath, function(err) {
             if(err) 
             {
                 console.debug("ZIP file delete failed : " + err);
             }
-            console.debug("ZIP file deleted successfuly.");
+            console.debug("ZIP file deleted successfully.");
         });
     });
     writer.on('error', function (err) {
-        console.error("error thrown while creating ZIP on azure agent." + err);
+        console.error("Error thrown while creating ZIP on azure agent." + err);
         throw new Error(err.message);
     });
 }
