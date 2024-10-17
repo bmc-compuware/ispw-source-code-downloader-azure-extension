@@ -10,7 +10,7 @@ The following are required to use this plugin:
 - Azure Cloud or On Premise Azure DevOps Server.
 - [Azure Pipelines agents](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser): Self Hosted Agents setup on which WorkBench CLI will be installed. 
 - [BMC Common Configuration](https://marketplace.visualstudio.com/items?itemName=BMC.common-config-extension) Azure extension.
-- [BMC AMI Common Enterprise Services](https://docs.bmc.com/docs/bces2010/introduction-to-bmc-compuware-enterprise-services-1068407133.html)
+- [BMC AMI Common Enterprise Services (minimum version required : 24.01.02)](https://docs.bmc.com/docs/bces2010/introduction-to-bmc-compuware-enterprise-services-1068407133.html)
 - Host Communications Interface.
 
 
