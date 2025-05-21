@@ -16,6 +16,7 @@ const CertificateUtils = require("./utils/CertificateUtils");
 const AdmZip = require("adm-zip");
 const fs = require("fs");
 const path = require("path");
+const fse = require("fs-extra");
 /*
    Class used ispw Azure downloader extension for downloading source from ispw repository
    and different container types (Assignment/Release/Set)
@@ -89,6 +90,10 @@ class IspwDownloader {
         if (downloadIncludes != undefined) {
             containerDownloadDTO.downloadIncludes = downloadIncludes;
         }
+        const cpCategorizeOnComponentType = tl.getInput('cpCategorizeOnComponentType', false);
+        if (cpCategorizeOnComponentType != undefined) {
+            containerDownloadDTO.cpCategorizeOnComponentType = cpCategorizeOnComponentType;
+        }
         const downloadUnchangedSource = tl.getInput('downloadUnchangedSource', false);
         if (downloadUnchangedSource != undefined) {
             containerDownloadDTO.downloadUnchangedSource = downloadUnchangedSource;
@@ -106,7 +111,7 @@ class IspwDownloader {
             yield cmnService.doPostRequest(url, header.host, header.port, containerDownloadDTO, header.authType, header.cesToken, header.certContent, header.certKey, true, false).then(function (response) {
                 if (response.status && response.status == 200) {
                     var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
-                    _processZIPFile(fileName, response.data);
+                    _processZIPFile(fileName, response.data, containerDownloadDTO.sourceDownloadLocation, containerDownloadDTO.cpCategorizeOnComponentType);
                 }
                 else if (response instanceof Error) {
                     throw new Error(response.message);
@@ -151,6 +156,10 @@ class IspwDownloader {
         if (downloadIncludes != undefined) {
             repositoryDownloadDTO.downloadIncludes = downloadIncludes;
         }
+        const cpCategorizeOnComponentType = tl.getInput('cpCategorizeOnComponentType', false);
+        if (cpCategorizeOnComponentType != undefined) {
+            repositoryDownloadDTO.cpCategorizeOnComponentType = cpCategorizeOnComponentType;
+        }
         const downloadUnchangedSource = tl.getInput('downloadUnchangedSource');
         if (downloadUnchangedSource != undefined) {
             repositoryDownloadDTO.downloadUnchangedSource = downloadUnchangedSource;
@@ -176,7 +185,7 @@ class IspwDownloader {
                 else {
                     if (response.status == 200) {
                         var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
-                        _processZIPFile(fileName, response.data);
+                        _processZIPFile(fileName, response.data, repositoryDownloadDTO.sourceDownloadLocation, repositoryDownloadDTO.cpCategorizeOnComponentType);
                     }
                     else {
                         console.error("Error occurred while fetching the source for stream " + header.stream + ", application : " + header.application + ", subapplication " + header.subAppl + ", level : " + header.level + response.data.message);
@@ -187,23 +196,34 @@ class IspwDownloader {
     }
 }
 exports.IspwDownloader = IspwDownloader;
-function _processZIPFile(fileName, data) {
+function _processZIPFile(fileName, data, srcDownloadLoc, cpCategorizeOnComponentType) {
     var agentWorkFolder = tl.getVariable("Build_ArtifactStagingDirectory");
     var filePath = path.normalize(agentWorkFolder + path.sep + fileName);
     const writer = fs.createWriteStream(filePath);
     data.pipe(writer);
     writer.on('finish', function () {
-        console.debug("Finished writing response data.");
-        console.debug("Extracting source...");
-        var zip = new AdmZip(filePath);
-        var outputFolder = filePath.replace(".zip", "");
-        zip.extractAllTo(outputFolder, true);
-        console.debug("Source extracted to : " + agentWorkFolder);
-        fs.unlink(filePath, function (err) {
-            if (err) {
-                console.debug("ZIP file delete failed : " + err);
+        return __awaiter(this, void 0, void 0, function* () {
+            console.debug("Finished writing response data.");
+            console.debug("Extracting source...");
+            var zip = new AdmZip(filePath);
+            var outputFolder = filePath.replace(".zip", "");
+            zip.extractAllTo(outputFolder, true);
+            //categorize files 
+            if (cpCategorizeOnComponentType == "true") {
+                console.log("Categorizing files into folders...");
+                const result = yield groupFilesByTypeInEachApp(outputFolder);
             }
-            console.debug("ZIP file deleted successfully.");
+            console.debug("Source extracted to : " + agentWorkFolder);
+            fs.unlink(filePath, function (err) {
+                if (err) {
+                    console.debug("ZIP file delete failed : " + err);
+                }
+                console.debug("ZIP file deleted successfully.");
+            });
+            fse.emptyDirSync(srcDownloadLoc);
+            if (agentWorkFolder != undefined) {
+                copyFolderContents(agentWorkFolder, srcDownloadLoc); //update source folder specified in pipeline
+            }
         });
     });
     writer.on('error', function (err) {
@@ -211,3 +231,46 @@ function _processZIPFile(fileName, data) {
         throw new Error(err.message);
     });
 }
+function ensureDir(dirPath) {
+    if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+    }
+}
+function groupFilesByTypeInEachApp(dirToSort) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const appFolders = fs.readdirSync(dirToSort);
+        for (const appFolder of appFolders) {
+            const dataDir = path.join(dirToSort, appFolder, 'MF_Source');
+            if (!fs.existsSync(dataDir) || !fs.statSync(dataDir).isDirectory())
+                continue;
+            const files = fs.readdirSync(dataDir);
+            for (const file of files) {
+                const filePath = path.join(dataDir, file);
+                const stat = fs.statSync(filePath);
+                if (!stat.isFile())
+                    continue;
+                const ext = path.extname(file).toLowerCase().replace('.', '') || 'noext';
+                const typeDir = path.join(dataDir, ext);
+                ensureDir(typeDir);
+                const destPath = path.join(typeDir, file);
+                fs.renameSync(filePath, destPath);
+            }
+        }
+    });
+}
+const copyFolderContents = (sourceDir, destDir) => {
+    if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+    }
+    // Read the directory
+    fs.readdirSync(sourceDir).forEach((file) => {
+        const sourceFile = path.join(sourceDir, file);
+        const destFile = path.join(destDir, file);
+        if (fs.lstatSync(sourceFile).isDirectory()) {
+            copyFolderContents(sourceFile, destFile);
+        }
+        else {
+            fs.copyFileSync(sourceFile, destFile);
+        }
+    });
+};
