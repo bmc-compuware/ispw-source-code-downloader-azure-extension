@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 4,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Echo instanceName",
     "inputs": [
@@ -239,6 +239,14 @@
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "Check this option if you want to download related includes eg.Copybooks, Header Files etc."
+        },
+        {
+            "name": "cpCategorizeOnComponentType",
+            "type": "boolean",
+            "label": "Categorize On Component Type",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Check this option if you want to categorize downloaded files into different folders based on component Type"
         },
         {
             "name": "downloadCompileOnly",

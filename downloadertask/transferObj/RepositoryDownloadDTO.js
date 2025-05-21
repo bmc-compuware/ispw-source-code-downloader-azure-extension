@@ -1,6 +1,6 @@
 "use strict";
 class RepositoryDownloadDTO {
-    constructor(runtimeConfig, codePage, sourceDownloadLocation, componentTypes, levelOption, applicationRootFolders, downloadCompileOnly, downloadIncludes, downloadUnchangedSource) {
+    constructor(runtimeConfig, codePage, sourceDownloadLocation, componentTypes, levelOption, applicationRootFolders, downloadCompileOnly, downloadIncludes, cpCategorizeOnComponentType, downloadUnchangedSource) {
         this.runtimeConfig = "";
         this.codePage = "";
         this.sourceDownloadLocation = "";
@@ -10,6 +10,7 @@ class RepositoryDownloadDTO {
         this.downloadCompileOnly = "";
         this.downloadIncludes = "";
         this.downloadUnchangedSource = "";
+        this.cpCategorizeOnComponentType = "";
         this.runtimeConfig = runtimeConfig;
         this.codePage = codePage;
         this.sourceDownloadLocation = sourceDownloadLocation;
@@ -18,6 +19,7 @@ class RepositoryDownloadDTO {
         this.applicationRootFolders = applicationRootFolders;
         this.downloadCompileOnly = downloadCompileOnly;
         this.downloadIncludes = downloadIncludes;
+        this.cpCategorizeOnComponentType = cpCategorizeOnComponentType;
         this.downloadUnchangedSource = downloadUnchangedSource;
     }
 }

@@ -8,8 +8,9 @@ class RepositoryDownloadDTO {
     downloadCompileOnly: string = "";
     downloadIncludes: string = "";
     downloadUnchangedSource: string = "";
+    cpCategorizeOnComponentType: string = "";
   
-    constructor(runtimeConfig: string, codePage: string, sourceDownloadLocation: string, componentTypes: string, levelOption: string, applicationRootFolders: string, downloadCompileOnly: string, downloadIncludes: string, downloadUnchangedSource: string) {
+    constructor(runtimeConfig: string, codePage: string, sourceDownloadLocation: string, componentTypes: string, levelOption: string, applicationRootFolders: string, downloadCompileOnly: string, downloadIncludes: string,cpCategorizeOnComponentType: string, downloadUnchangedSource: string) {
       this.runtimeConfig = runtimeConfig;
       this.codePage = codePage;
       this.sourceDownloadLocation = sourceDownloadLocation;
@@ -18,6 +19,7 @@ class RepositoryDownloadDTO {
       this.applicationRootFolders = applicationRootFolders;
       this.downloadCompileOnly = downloadCompileOnly;
       this.downloadIncludes = downloadIncludes;
+      this.cpCategorizeOnComponentType = cpCategorizeOnComponentType;
       this.downloadUnchangedSource = downloadUnchangedSource;
     }
   }
