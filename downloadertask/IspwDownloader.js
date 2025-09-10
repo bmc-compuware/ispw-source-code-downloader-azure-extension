@@ -93,6 +93,14 @@ class IspwDownloader {
         if (downloadUnchangedSource != undefined) {
             containerDownloadDTO.downloadUnchangedSource = downloadUnchangedSource;
         }
+        const categorizeOnComponentType = tl.getInput('categorizeOnComponentType');
+        if (categorizeOnComponentType != undefined) {
+            containerDownloadDTO.categorizeOnComponentType = categorizeOnComponentType;
+        }
+        const categorizeOnSubAppl = tl.getInput('categorizeOnSubAppl');
+        if (categorizeOnSubAppl != undefined) {
+            containerDownloadDTO.categorizeOnSubAppl = categorizeOnSubAppl;
+        }
     }
     /*
     Function for downloading source from different
@@ -154,6 +162,14 @@ class IspwDownloader {
         const downloadUnchangedSource = tl.getInput('downloadUnchangedSource');
         if (downloadUnchangedSource != undefined) {
             repositoryDownloadDTO.downloadUnchangedSource = downloadUnchangedSource;
+        }
+        const categorizeOnComponentType = tl.getInput('categorizeOnComponentType');
+        if (categorizeOnComponentType != undefined) {
+            repositoryDownloadDTO.categorizeOnComponentType = categorizeOnComponentType;
+        }
+        const categorizeOnSubAppl = tl.getInput('categorizeOnSubAppl');
+        if (categorizeOnSubAppl != undefined) {
+            repositoryDownloadDTO.categorizeOnSubAppl = categorizeOnSubAppl;
         }
     }
     /*
