@@ -111,7 +111,7 @@ export class IspwDownloader {
         }) {
             if (response.status && response.status == 200) {
                 var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
-                _processZIPFile(fileName, response.data);
+                _processZIPFile(fileName, containerDownloadDTO.sourceDownloadLocation, response.data);
             } 
             else if(response instanceof Error) {
                 throw new Error(response.message);
@@ -199,7 +199,7 @@ export class IspwDownloader {
             } else {
                 if (response.status == 200) {
                     var fileName = response.headers['content-disposition'].split("=")[1].replace(/\"/g, "");
-                    _processZIPFile(fileName, response.data);
+                    _processZIPFile(fileName, repositoryDownloadDTO.sourceDownloadLocation, response.data);
                 } else {
                     console.error("Error occurred while fetching the source for stream " + header.stream + ", application : " + header.application + ", subapplication " + header.subAppl + ", level : " + header.level + response.data.message);
                 }
@@ -208,9 +208,26 @@ export class IspwDownloader {
     }
 }
 
-function _processZIPFile(fileName: string, data: { message: string; pipe: (arg0: fs.WriteStream) => void; }) {
-    var agentWorkFolder = tl.getVariable("Build_ArtifactStagingDirectory");
-    var filePath = path.normalize(agentWorkFolder + path.sep + fileName);
+function _processZIPFile(fileName: string, downloadLocation: string, data: { message: string; pipe: (arg0: fs.WriteStream) => void; }) {
+    
+    if (downloadLocation?.trim()) {
+        _writeDataToFilepaths(fileName, downloadLocation, data);
+    }else
+    {
+        var agentWorkFolder = tl.getVariable("Build_ArtifactStagingDirectory")!;
+        _writeDataToFilepaths(fileName, agentWorkFolder, data);
+    }
+
+}
+
+
+function _writeDataToFilepaths(fileName: string, downloadLocation: string, data: { message: string; pipe: (arg0: fs.WriteStream) => void; }) {
+
+    // ensure dir exists
+    fs.mkdirSync(downloadLocation, { recursive: true });
+
+    var filePath = path.normalize(downloadLocation + path.sep + fileName);
+
     const writer = fs.createWriteStream(filePath);
     data.pipe(writer);
     writer.on('finish', function () {
@@ -219,7 +236,7 @@ function _processZIPFile(fileName: string, data: { message: string; pipe: (arg0:
         var zip = new AdmZip(filePath);
         var outputFolder = filePath.replace(".zip","");
         zip.extractAllTo(outputFolder, true);
-        console.debug("Source extracted to : " + agentWorkFolder);
+        console.debug("Source extracted to : " + downloadLocation);
         fs.unlink(filePath, function(err) {
             if(err) 
             {
