@@ -9,7 +9,7 @@
     "author": "BMC Software",
     "version": {
         "Major": 1,
-        "Minor": 4,
+        "Minor": 5,
         "Patch": 0
     },
     "instanceNameFormat": "Echo instanceName",
@@ -260,6 +260,22 @@
               "false": "No"
             },
             "visibleRule": "cesUrl StartsWith https:"
+        },
+        {
+            "name": "categorizeOnComponentType",
+            "type": "boolean",
+            "label": "Categorize On Component Type",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Categorize the source files to different folders according to Component Type.This field is optional and is not case sensitive."
+        },
+        {
+            "name": "categorizeOnSubAppl",
+            "type": "boolean",
+            "label": "Categorize On SubAppl",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Organize the source files into separate folders based on their respective Sub Applications within the Application folder.This field is optional and is not case sensitive."
         }
     ],
 	"dataSourceBindings": [

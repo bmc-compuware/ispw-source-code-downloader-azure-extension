@@ -119,6 +119,10 @@ Do the following in the **Filter** section to identify Code Pipeline members to 
 - **Force download of unchanged source** : Optionally use to indicate that all source matching the current filter should be downloaded, regardless of whether it has been changed recently or not. If this box is left unchecked, it will delete any files in the workspace that no longer match the filter specified above. Leaving it unchecked will also only download source that has been changed since the last time the job was run.
 - **Trust all Certificates** : This allows you to trust self-signed server certificates. By default set to false.\n>Enabling this is not recommended.
 
+- **Categorize On Component Type** : Categorize the source files to different folders according to Component Type.This field is optional and is not case sensitive.
+
+-**Categorize On SubAppl** : Organize the source files into separate folders based on their respective Sub Applications within the Application folder.This field is optional and is not case sensitive.
+
 Click **Save**.
 
 Run the job, which by default the following occurs:
