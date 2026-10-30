@@ -300,8 +300,9 @@
             "resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
         }
     ],
+    "minimumAgentVersion": "4.265.1",
     "execution": {
-        "Node16": {
+        "Node24": {
             "target": "index.js"
         }
     }

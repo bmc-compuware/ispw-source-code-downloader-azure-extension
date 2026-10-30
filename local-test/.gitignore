@@ -1,0 +1,10 @@
+# Real credentials / local inputs — never commit
+inputs.container.json
+inputs.repository.json
+inputs.local.json
+inputs.local.ps1
+*.token
+
+# Runtime output
+download/
+_agent/

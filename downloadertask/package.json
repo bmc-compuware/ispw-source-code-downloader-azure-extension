@@ -7,21 +7,25 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ../local-test/run.js --inputs ../local-test/inputs.container.json",
+    "test:container": "node ../local-test/run.js --inputs ../local-test/inputs.container.json",
+    "test:repository": "node ../local-test/run.js --inputs ../local-test/inputs.repository.json"
   },
   "author": "Jalaj Arora",
   "license": "ISC",
+  "engines": {
+    "node": ">=24.22.1"
+  },
   "dependencies": {
-    "adm-zip": "0.5.16",
-    "azure-pipelines-task-lib": "^4.7.0",
+    "adm-zip": "^0.6.1",
+    "axios": "^1.21.0",
+    "azure-pipelines-task-lib": "^5.282.0",
     "npm-dependency-exclusion": "1.0.2",
     "semver": "5.7.2"
   },
   "devDependencies": {
-    "@types/node": "^18.7.15",
-    "@types/q": "^1.5.5",
-    "@webpack-cli/generators": "^3.0.7",
-    "axios": "1.7.4"
+    "@types/node": "^24.0.0",
+    "@types/q": "^1.5.5"
   },
   "exclusions": {
     "mockery": "any"

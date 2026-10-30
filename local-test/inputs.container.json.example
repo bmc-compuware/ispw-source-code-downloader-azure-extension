@@ -1,0 +1,22 @@
+{
+  "cesUrl": "http://your-ces-host:48226",
+  "connectionId": "your-host:29666#1047",
+  "runtimeConfig": "",
+  "authenticationType": "TOKEN",
+  "cesSecretToken": "YOUR_CES_TOKEN",
+  "connectedServiceName": "",
+  "keyvaultName": "",
+  "certificateName": "",
+  "trustAllCerts": "false",
+  "sourceDownloadLocation": "",
+  "downloadSourceType": "Container",
+  "containerType": "Assignment",
+  "containerId": "YOURASGNID",
+  "componentType": "",
+  "taskLevel": "",
+  "downloadUnchangedSource": "true",
+  "downloadIncludes": "false",
+  "downloadCompileOnly": "false",
+  "categorizeOnComponentType": "false",
+  "categorizeOnSubAppl": "false"
+}
