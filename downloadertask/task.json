@@ -300,7 +300,7 @@
             "resultTemplate": "{\"Value\":\"{{{host}}}#{{{code_page}}}\",\"DisplayValue\":\"{{{host}}}\"}"
         }
     ],
-    "minimumAgentVersion": "4.265.1",
+    "minimumAgentVersion": "5.281.1",
     "execution": {
         "Node24": {
             "target": "index.js"
